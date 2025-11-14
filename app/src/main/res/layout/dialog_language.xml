@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecciona un idioma"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/dark_gray"
+        android:layout_marginBottom="16dp" />
+
+    <RadioGroup
+        android:id="@+id/language_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radio_spanish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Español"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/radio_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="English"
+            android:textSize="16sp"
+            android:padding="12dp" />
+
+        <RadioButton
+            android:id="@+id/radio_french"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Français"
+            android:textSize="16sp"
+            android:padding="12dp" />
+
+        <RadioButton
+            android:id="@+id/radio_german"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deutsch"
+            android:textSize="16sp"
+            android:padding="12dp" />
+
+    </RadioGroup>
+
+</LinearLayout>

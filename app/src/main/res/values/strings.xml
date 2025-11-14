@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">explorapp</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+    <string name="place_detail_title">Detalles del Lugar</string>
+    <string name="rating_text">Calificación:</string>
+    <string name="schedule_title">Horarios:</string>
+    <string name="schedule_placeholder">Lunes a Viernes: 9:00 AM - 6:00 PM\nSábado y Domingo: 10:00 AM - 5:00 PM</string>
+    <string name="description_title">Descripción:</string>
+    <string name="btn_directions">Cómo llegar</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_share">Compartir</string>
+    <string name="btn_reviews">Ver reseñas</string>
 </resources>

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent intent = new Intent(MainActivity.this, InicioActivity.class);
+                Intent intent = new Intent(MainActivity.this, BuscadorActivity.class);
                 startActivity(intent);
                 finish();
 

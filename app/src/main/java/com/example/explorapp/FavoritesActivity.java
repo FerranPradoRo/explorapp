@@ -1,58 +1,44 @@
 package com.example.explorapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
-import android.content.Intent;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
-public class BuscadorActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
     private BottomNavigationView bottomNavigationView;
+    private MaterialButton btnExplore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buscador);
+        setContentView(R.layout.activity_favorites);
 
+        initializeViews();
+        setupBottomNavigation();
+    }
+
+    private void initializeViews() {
         toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        btnExplore = findViewById(R.id.btn_explore);
 
         setSupportActionBar(toolbar);
 
-        setupBottomNavigation();
-
-        AutoCompleteTextView autoComplete = findViewById(R.id.autoCompleteSearch);
-
-        String[] ciudades = {"Guadalajara, Jalisco, México"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, ciudades);
-
-        autoComplete.setAdapter(adapter);
-
-        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String ciudadSeleccionada = (String) parent.getItemAtPosition(position);
-
-                Intent intent = new Intent(BuscadorActivity.this, MapaActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        btnExplore.setOnClickListener(v -> {
+            Intent intent = new Intent(FavoritesActivity.this, MapaActivity.class);
+            startActivity(intent);
         });
     }
 
     private void setupBottomNavigation() {
-        bottomNavigationView.setSelectedItemId(R.id.nav_search);
+        bottomNavigationView.setSelectedItemId(R.id.nav_favorites);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -61,11 +47,11 @@ public class BuscadorActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (itemId == R.id.nav_favorites) {
-                startActivity(new Intent(this, FavoritesActivity.class));
-                finish();
+                // Ya estamos aquí
                 return true;
             } else if (itemId == R.id.nav_search) {
-                // Ya estamos aquí
+                startActivity(new Intent(this, BuscadorActivity.class));
+                finish();
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));

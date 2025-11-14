@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_header"
+            android:title="Categorías"
+            android:enabled="false" />
+    </group>
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/category_restaurants"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Restaurantes"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_cafes"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Cafeterías"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_plazas"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Plazas"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_museums"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Museos"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_theaters"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Teatros"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_hotels"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Hoteles"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_bars"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Bares"
+            android:checkable="true" />
+
+        <item
+            android:id="@+id/category_parks"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Parques"
+            android:checkable="true" />
+    </group>
+
+    <group android:checkableBehavior="none">
+        <item android:title="Opciones">
+            <menu>
+                <item
+                    android:id="@+id/nav_languages"
+                    android:icon="@android:drawable/ic_menu_rotate"
+                    android:title="Idiomas" />
+
+                <item
+                    android:id="@+id/nav_help"
+                    android:icon="@android:drawable/ic_menu_help"
+                    android:title="Ayuda" />
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@android:drawable/ic_menu_preferences"
+                    android:title="Configuración" />
+            </menu>
+        </item>
+    </group>
+</menu>
