@@ -126,8 +126,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
     private void sharePlace() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        String shareBody = "¡Mira este lugar en ExploreApp! " + placeName.getText().toString();
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "ExploreApp - " + placeName.getText().toString());
+        String shareBody = "¡Mira este lugar en EXPLORA! " + placeName.getText().toString();
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + placeName.getText().toString());
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(shareIntent, "Compartir lugar"));
     }

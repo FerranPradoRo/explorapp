@@ -116,8 +116,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showAboutDialog() {
         new android.app.AlertDialog.Builder(this)
-            .setTitle("Acerca de ExploreApp")
-            .setMessage("ExploreApp v1.0\n\nAplicación de turismo para descubrir los mejores lugares de Guadalajara.\n\nDesarrollado en 2025")
+            .setTitle("Acerca de EXPLORA")
+            .setMessage("EXPLORA v1.0\n\nAplicación de turismo para descubrir los mejores lugares de Guadalajara.\n\nDesarrollado en 2025")
             .setPositiveButton("Cerrar", null)
             .show();
     }

@@ -33,6 +33,7 @@ public class MapaActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private MaterialToolbar toolbar;
     private FloatingActionButton fabCurrentLocation;
+    private com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton btnFilters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,12 @@ public class MapaActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.toolbar);
         fabCurrentLocation = findViewById(R.id.fab_current_location);
+        btnFilters = findViewById(R.id.btn_filters);
 
         setSupportActionBar(toolbar);
+
+        // Listener para el botón de filtros
+        btnFilters.setOnClickListener(v -> showFiltersDialog());
     }
 
     private void configurarMapa() {
@@ -94,23 +99,7 @@ public class MapaActivity extends AppCompatActivity {
     }
 
     private void handleDrawerItemClick(int itemId) {
-        if (itemId == R.id.category_restaurants) {
-            Toast.makeText(this, "Categoría: Restaurantes", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_cafes) {
-            Toast.makeText(this, "Categoría: Cafeterías", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_plazas) {
-            Toast.makeText(this, "Categoría: Plazas", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_museums) {
-            Toast.makeText(this, "Categoría: Museos", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_theaters) {
-            Toast.makeText(this, "Categoría: Teatros", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_hotels) {
-            Toast.makeText(this, "Categoría: Hoteles", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_bars) {
-            Toast.makeText(this, "Categoría: Bares", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.category_parks) {
-            Toast.makeText(this, "Categoría: Parques", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.nav_languages) {
+        if (itemId == R.id.nav_languages) {
             showLanguageDialog();
         } else if (itemId == R.id.nav_help) {
             Toast.makeText(this, "Ayuda", Toast.LENGTH_SHORT).show();
@@ -276,6 +265,98 @@ public class MapaActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
 
         builder.create().show();
+    }
+
+    private void showFiltersDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        android.view.LayoutInflater inflater = getLayoutInflater();
+        android.view.View dialogView = inflater.inflate(R.layout.dialog_filters, null);
+        builder.setView(dialogView);
+
+        // Referencias a las vistas del diálogo
+        android.widget.CheckBox filterRestaurants = dialogView.findViewById(R.id.filter_restaurants);
+        android.widget.CheckBox filterCafes = dialogView.findViewById(R.id.filter_cafes);
+        android.widget.CheckBox filterPlazas = dialogView.findViewById(R.id.filter_plazas);
+        android.widget.CheckBox filterMuseums = dialogView.findViewById(R.id.filter_museums);
+        android.widget.CheckBox filterTheaters = dialogView.findViewById(R.id.filter_theaters);
+        android.widget.CheckBox filterHotels = dialogView.findViewById(R.id.filter_hotels);
+        android.widget.CheckBox filterBars = dialogView.findViewById(R.id.filter_bars);
+        android.widget.CheckBox filterParks = dialogView.findViewById(R.id.filter_parks);
+
+        android.widget.RadioGroup priceRadioGroup = dialogView.findViewById(R.id.price_radio_group);
+        android.widget.RatingBar ratingFilter = dialogView.findViewById(R.id.rating_filter);
+        android.widget.TextView ratingText = dialogView.findViewById(R.id.rating_text);
+
+        com.google.android.material.button.MaterialButton btnApply = dialogView.findViewById(R.id.btn_apply_filters);
+        com.google.android.material.button.MaterialButton btnClear = dialogView.findViewById(R.id.btn_clear_filters);
+
+        // Listener para el rating bar
+        ratingFilter.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            if (rating == 0) {
+                ratingText.setText("Todas");
+            } else {
+                ratingText.setText(rating + "+ estrellas");
+            }
+        });
+
+        android.app.AlertDialog dialog = builder.create();
+
+        // Botón Aplicar
+        btnApply.setOnClickListener(v -> {
+            StringBuilder filterSummary = new StringBuilder("Filtros aplicados:\n");
+
+            // Categorías seleccionadas
+            java.util.ArrayList<String> categories = new java.util.ArrayList<>();
+            if (filterRestaurants.isChecked()) categories.add("Restaurantes");
+            if (filterCafes.isChecked()) categories.add("Cafeterías");
+            if (filterPlazas.isChecked()) categories.add("Plazas");
+            if (filterMuseums.isChecked()) categories.add("Museos");
+            if (filterTheaters.isChecked()) categories.add("Teatros");
+            if (filterHotels.isChecked()) categories.add("Hoteles");
+            if (filterBars.isChecked()) categories.add("Bares");
+            if (filterParks.isChecked()) categories.add("Parques");
+
+            if (!categories.isEmpty()) {
+                filterSummary.append("Categorías: ").append(String.join(", ", categories)).append("\n");
+            }
+
+            // Precio seleccionado
+            int selectedPriceId = priceRadioGroup.getCheckedRadioButtonId();
+            if (selectedPriceId == R.id.price_low) {
+                filterSummary.append("Precio: Económico\n");
+            } else if (selectedPriceId == R.id.price_medium) {
+                filterSummary.append("Precio: Moderado\n");
+            } else if (selectedPriceId == R.id.price_high) {
+                filterSummary.append("Precio: Costoso\n");
+            }
+
+            // Rating seleccionado
+            float rating = ratingFilter.getRating();
+            if (rating > 0) {
+                filterSummary.append("Calificación mínima: ").append(rating).append(" estrellas");
+            }
+
+            Toast.makeText(this, filterSummary.toString(), Toast.LENGTH_LONG).show();
+            // En el futuro: aplicar filtros reales al mapa
+            dialog.dismiss();
+        });
+
+        // Botón Limpiar
+        btnClear.setOnClickListener(v -> {
+            filterRestaurants.setChecked(false);
+            filterCafes.setChecked(false);
+            filterPlazas.setChecked(false);
+            filterMuseums.setChecked(false);
+            filterTheaters.setChecked(false);
+            filterHotels.setChecked(false);
+            filterBars.setChecked(false);
+            filterParks.setChecked(false);
+            priceRadioGroup.check(R.id.price_all);
+            ratingFilter.setRating(0);
+            Toast.makeText(this, "Filtros limpiados", Toast.LENGTH_SHORT).show();
+        });
+
+        dialog.show();
     }
 
     @Override
