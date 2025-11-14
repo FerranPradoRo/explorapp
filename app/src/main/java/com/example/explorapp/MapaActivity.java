@@ -34,6 +34,7 @@ public class MapaActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private FloatingActionButton fabCurrentLocation;
     private com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton btnFilters;
+    private Marker selectedMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MapaActivity extends AppCompatActivity {
         configurarDrawer();
         configurarBottomNavigation();
         agregarMarcadoresMock();
+        setupBackPressHandler();
     }
 
     private void initializeViews() {
@@ -143,14 +145,23 @@ public class MapaActivity extends AppCompatActivity {
             marcador.setTitle(lugar.name);
             marcador.setSnippet(lugar.category);
 
-            // Al hacer clic en el marcador, abrir detalles
+            // Ícono predeterminado (azul/gris)
+            marcador.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+
+            // Al hacer clic en el marcador, cambiar color y mostrar bottom sheet
             marcador.setOnMarkerClickListener((marker, mapView) -> {
-                Intent intent = new Intent(MapaActivity.this, PlaceDetailActivity.class);
-                intent.putExtra("place_name", lugar.name);
-                intent.putExtra("place_category", lugar.category);
-                intent.putExtra("place_description", lugar.description);
-                intent.putExtra("place_rating", lugar.rating);
-                startActivity(intent);
+                // Restaurar el color del marcador anterior
+                if (selectedMarker != null && selectedMarker != marker) {
+                    selectedMarker.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+                }
+
+                // Cambiar color del marcador actual (amarillo/destacado)
+                marker.setIcon(getResources().getDrawable(android.R.drawable.star_big_on));
+                selectedMarker = marker;
+
+                // Mostrar bottom sheet
+                showPlaceDetailsBottomSheet(lugar);
+                mapView.invalidate();
                 return true;
             });
 
@@ -359,13 +370,168 @@ public class MapaActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    private void showPlaceDetailsBottomSheet(PlaceMock lugar) {
+        com.google.android.material.bottomsheet.BottomSheetDialog bottomSheet =
+            new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+        bottomSheet.setDismissWithAnimation(true);
+
+        // Desactivar el oscurecimiento por defecto del dialog
+        android.view.Window window = bottomSheet.getWindow();
+        if (window != null) {
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }
+
+        android.view.View sheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_place_detail, null);
+
+        // Referencias a las vistas
+        android.widget.TextView placeName = sheetView.findViewById(R.id.place_name);
+        android.widget.TextView placeCategory = sheetView.findViewById(R.id.place_category);
+        android.widget.TextView placeDescription = sheetView.findViewById(R.id.place_description);
+        android.widget.TextView ratingValue = sheetView.findViewById(R.id.rating_value);
+        android.widget.RatingBar placeRating = sheetView.findViewById(R.id.place_rating);
+
+        com.google.android.material.button.MaterialButton btnDirections = sheetView.findViewById(R.id.btn_directions);
+        com.google.android.material.button.MaterialButton btnSave = sheetView.findViewById(R.id.btn_save);
+        com.google.android.material.button.MaterialButton btnShare = sheetView.findViewById(R.id.btn_share);
+
+        // Establecer datos
+        placeName.setText(lugar.name);
+        placeCategory.setText(lugar.category);
+        placeDescription.setText(lugar.description);
+        placeRating.setRating(lugar.rating);
+        ratingValue.setText(String.format("%.1f", lugar.rating));
+
+        // Listeners de botones
+        btnDirections.setOnClickListener(v -> {
+            Toast.makeText(this, "Abriendo direcciones - Próximamente", Toast.LENGTH_SHORT).show();
+        });
+
+        btnSave.setOnClickListener(v -> {
+            Toast.makeText(this, "Lugar guardado - Próximamente", Toast.LENGTH_SHORT).show();
+        });
+
+        btnShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareBody = "¡Mira este lugar en EXPLORA! " + lugar.name;
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + lugar.name);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(shareIntent, "Compartir lugar"));
+        });
+
+        bottomSheet.setContentView(sheetView);
+
+        // Configurar comportamiento del bottom sheet
+        android.view.View bottomSheetInternal = bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if (bottomSheetInternal != null) {
+            com.google.android.material.bottomsheet.BottomSheetBehavior<?> behavior =
+                com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheetInternal);
+
+            // Configurar peek height (altura cuando está colapsado - mostrar imagen + nombre completo)
+            behavior.setPeekHeight(720);
+            behavior.setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED);
+            behavior.setSkipCollapsed(false);
+            behavior.setHideable(true);
+
+            // Variable para rastrear si está expandiendo desde colapsado
+            final boolean[] isExpanding = {false};
+
+            // Listener para controlar el oscurecimiento según el estado
+            behavior.addBottomSheetCallback(new com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@androidx.annotation.NonNull android.view.View bottomSheetView, int newState) {
+                    android.view.Window dialogWindow = bottomSheet.getWindow();
+                    if (dialogWindow != null) {
+                        android.view.WindowManager.LayoutParams params = dialogWindow.getAttributes();
+
+                        if (newState == com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED) {
+                            // Oscurecer cuando está expandido
+                            params.dimAmount = 0.5f;
+                            params.flags |= android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                            isExpanding[0] = false;
+                        } else if (newState == com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED) {
+                            // No oscurecer cuando está colapsado
+                            params.dimAmount = 0f;
+                            params.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                            isExpanding[0] = false;
+                        } else if (newState == com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING) {
+                            isExpanding[0] = true;
+                        } else if (newState == com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_SETTLING) {
+                            // Cuando se está asentando después del clic
+                            if (!isExpanding[0]) {
+                                params.dimAmount = 0f;
+                                params.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                            }
+                        }
+                        dialogWindow.setAttributes(params);
+                    }
+                }
+
+                @Override
+                public void onSlide(@androidx.annotation.NonNull android.view.View bottomSheetView, float slideOffset) {
+                    // Oscurecer gradualmente cuando está expandiendo (arrastrar o clic)
+                    android.view.Window dialogWindow = bottomSheet.getWindow();
+                    if (dialogWindow != null && isExpanding[0]) {
+                        android.view.WindowManager.LayoutParams params = dialogWindow.getAttributes();
+                        // Oscurecer gradualmente de 0% a 50% según el deslizamiento
+                        // slideOffset va de 0 (colapsado) a 1 (expandido)
+                        if (slideOffset > 0.05f) {
+                            params.dimAmount = Math.max(0, Math.min(0.5f, (slideOffset - 0.05f) / 0.95f * 0.5f));
+                            params.flags |= android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                        } else {
+                            params.dimAmount = 0f;
+                            params.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                        }
+                        dialogWindow.setAttributes(params);
+                    }
+                }
+            });
+
+            // Hacer clic en el bottom sheet colapsado para expandirlo con animación
+            sheetView.setOnClickListener(v -> {
+                if (behavior.getState() == com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED) {
+                    // Marcar como expandiendo para que se anime el oscurecimiento
+                    isExpanding[0] = true;
+                    behavior.setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED);
+                }
+            });
+        }
+
+        // Listener para cuando se cierra el bottom sheet
+        bottomSheet.setOnDismissListener(dialog -> {
+            // Restaurar color del marcador cuando se cierra
+            if (selectedMarker != null) {
+                selectedMarker.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+                mapView.invalidate();
+                selectedMarker = null;
+            }
+
+            // Asegurar que el dim se elimine al cerrar
+            android.view.Window dialogWindow = bottomSheet.getWindow();
+            if (dialogWindow != null) {
+                android.view.WindowManager.LayoutParams params = dialogWindow.getAttributes();
+                params.dimAmount = 0f;
+                params.flags &= ~android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                dialogWindow.setAttributes(params);
+            }
+        });
+
+        bottomSheet.show();
+    }
+
+    private void setupBackPressHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    // Deshabilitar este callback y dejar que el sistema maneje el back press
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
