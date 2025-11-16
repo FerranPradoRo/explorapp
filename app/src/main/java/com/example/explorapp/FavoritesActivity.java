@@ -47,7 +47,6 @@ public class FavoritesActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (itemId == R.id.nav_favorites) {
-                // Ya estamos aquí
                 return true;
             } else if (itemId == R.id.nav_search) {
                 startActivity(new Intent(this, BuscadorActivity.class));
