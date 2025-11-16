@@ -1,6 +1,7 @@
 package com.example.explorapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.explorapp.models.Localizacion;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +25,9 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapaActivity extends AppCompatActivity {
 
@@ -35,6 +39,10 @@ public class MapaActivity extends AppCompatActivity {
     private FloatingActionButton fabCurrentLocation;
     private com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton btnFilters;
     private Marker selectedMarker = null;
+    private DatabaseHelper dbHelper;
+
+    // Mapa para asociar marcadores con localizaciones
+    private Map<Marker, Localizacion> markerLocalizacionMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +52,12 @@ public class MapaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mapa);
 
+        dbHelper = new DatabaseHelper(this);
         initializeViews();
         configurarMapa();
         configurarDrawer();
         configurarBottomNavigation();
-        agregarMarcadoresMock();
+        cargarLocalizaciones();
         setupBackPressHandler();
     }
 
@@ -135,18 +144,27 @@ public class MapaActivity extends AppCompatActivity {
         });
     }
 
-    private void agregarMarcadoresMock() {
-        List<PlaceMock> lugares = obtenerLugaresMock();
+    private void cargarLocalizaciones() {
+        List<Localizacion> localizaciones = obtenerLocalizacionesDesdeDB();
 
-        for (PlaceMock lugar : lugares) {
+        if (localizaciones.isEmpty()) {
+            Toast.makeText(this, "No se encontraron lugares en Guadalajara", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (Localizacion localizacion : localizaciones) {
             Marker marcador = new Marker(mapView);
-            marcador.setPosition(lugar.position);
+            GeoPoint position = new GeoPoint(localizacion.getLatitud(), localizacion.getLongitud());
+            marcador.setPosition(position);
             marcador.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            marcador.setTitle(lugar.name);
-            marcador.setSnippet(lugar.category);
+            marcador.setTitle(localizacion.getNombre());
+            marcador.setSnippet(localizacion.getCategoriaNombre());
 
             // Ícono predeterminado (azul/gris)
             marcador.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+
+            // Asociar el marcador con la localización
+            markerLocalizacionMap.put(marcador, localizacion);
 
             // Al hacer clic en el marcador, cambiar color y mostrar bottom sheet
             marcador.setOnMarkerClickListener((marker, mapView) -> {
@@ -159,8 +177,12 @@ public class MapaActivity extends AppCompatActivity {
                 marker.setIcon(getResources().getDrawable(android.R.drawable.star_big_on));
                 selectedMarker = marker;
 
-                // Mostrar bottom sheet
-                showPlaceDetailsBottomSheet(lugar);
+                // Obtener la localización asociada al marcador
+                Localizacion loc = markerLocalizacionMap.get(marker);
+                if (loc != null) {
+                    showPlaceDetailsBottomSheet(loc);
+                }
+
                 mapView.invalidate();
                 return true;
             });
@@ -169,82 +191,32 @@ public class MapaActivity extends AppCompatActivity {
         }
     }
 
-    private List<PlaceMock> obtenerLugaresMock() {
-        List<PlaceMock> lugares = new ArrayList<>();
+    private List<Localizacion> obtenerLocalizacionesDesdeDB() {
+        List<Localizacion> localizaciones = new ArrayList<>();
+        Cursor cursor = dbHelper.obtenerLocalizacionesPorCiudad("Guadalajara");
 
-        // Catedral de Guadalajara
-        lugares.add(new PlaceMock(
-            "Catedral de Guadalajara",
-            "Iglesia",
-            new GeoPoint(20.6767, -103.3475),
-            "Hermosa catedral en el centro histórico de Guadalajara.",
-            4.8f
-        ));
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Localizacion loc = new Localizacion();
+                loc.setLocalizacionId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_ID)));
+                loc.setNombre(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_NOMBRE)));
+                loc.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_DESCRIPCION)));
+                loc.setLatitud(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_LATITUD)));
+                loc.setLongitud(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_LONGITUD)));
+                loc.setPopularidadScore(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_POPULARIDAD_SCORE)));
 
-        // Teatro Degollado
-        lugares.add(new PlaceMock(
-            "Teatro Degollado",
-            "Teatro",
-            new GeoPoint(20.6763, -103.3434),
-            "Teatro neoclásico emblemático de la ciudad.",
-            4.7f
-        ));
+                // Obtener nombre de categoría si existe
+                int categoriaIndex = cursor.getColumnIndex("categoria_nombre");
+                if (categoriaIndex != -1) {
+                    loc.setCategoriaNombre(cursor.getString(categoriaIndex));
+                }
 
-        // Hospicio Cabañas
-        lugares.add(new PlaceMock(
-            "Hospicio Cabañas",
-            "Museo",
-            new GeoPoint(20.6755, -103.3397),
-            "Patrimonio de la Humanidad con murales de Orozco.",
-            4.9f
-        ));
+                localizaciones.add(loc);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
 
-        // Plaza de Armas
-        lugares.add(new PlaceMock(
-            "Plaza de Armas",
-            "Plaza",
-            new GeoPoint(20.6770, -103.3467),
-            "Plaza principal de Guadalajara con kiosco francés.",
-            4.6f
-        ));
-
-        // Mercado San Juan de Dios
-        lugares.add(new PlaceMock(
-            "Mercado San Juan de Dios",
-            "Mercado",
-            new GeoPoint(20.6748, -103.3454),
-            "Uno de los mercados cubiertos más grandes de Latinoamérica.",
-            4.5f
-        ));
-
-        // Parque Agua Azul
-        lugares.add(new PlaceMock(
-            "Parque Agua Azul",
-            "Parque",
-            new GeoPoint(20.6678, -103.3386),
-            "Parque urbano con áreas verdes y juegos.",
-            4.4f
-        ));
-
-        // Rotonda de los Jaliscienses Ilustres
-        lugares.add(new PlaceMock(
-            "Rotonda de los Jaliscienses Ilustres",
-            "Monumento",
-            new GeoPoint(20.6730, -103.3615),
-            "Monumento en honor a personajes destacados de Jalisco.",
-            4.5f
-        ));
-
-        // Templo Expiatorio
-        lugares.add(new PlaceMock(
-            "Templo Expiatorio",
-            "Iglesia",
-            new GeoPoint(20.6797, -103.3562),
-            "Templo de estilo neogótico con hermosos vitrales.",
-            4.8f
-        ));
-
-        return lugares;
+        return localizaciones;
     }
 
     private void showLanguageDialog() {
@@ -370,7 +342,10 @@ public class MapaActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showPlaceDetailsBottomSheet(PlaceMock lugar) {
+    /**
+     * Mostrar bottom sheet con detalles de la localización
+     */
+    private void showPlaceDetailsBottomSheet(Localizacion localizacion) {
         com.google.android.material.bottomsheet.BottomSheetDialog bottomSheet =
             new com.google.android.material.bottomsheet.BottomSheetDialog(this);
         bottomSheet.setDismissWithAnimation(true);
@@ -394,12 +369,12 @@ public class MapaActivity extends AppCompatActivity {
         com.google.android.material.button.MaterialButton btnSave = sheetView.findViewById(R.id.btn_save);
         com.google.android.material.button.MaterialButton btnShare = sheetView.findViewById(R.id.btn_share);
 
-        // Establecer datos
-        placeName.setText(lugar.name);
-        placeCategory.setText(lugar.category);
-        placeDescription.setText(lugar.description);
-        placeRating.setRating(lugar.rating);
-        ratingValue.setText(String.format("%.1f", lugar.rating));
+        // Establecer datos desde la base de datos
+        placeName.setText(localizacion.getNombre());
+        placeCategory.setText(localizacion.getCategoriaNombre() != null ? localizacion.getCategoriaNombre() : "Sin categoría");
+        placeDescription.setText(localizacion.getDescripcion());
+        placeRating.setRating(localizacion.getPopularidadScore());
+        ratingValue.setText(String.format("%.1f", localizacion.getPopularidadScore()));
 
         // Listeners de botones
         btnDirections.setOnClickListener(v -> {
@@ -413,8 +388,8 @@ public class MapaActivity extends AppCompatActivity {
         btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            String shareBody = "¡Mira este lugar en EXPLORA! " + lugar.name;
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + lugar.name);
+            String shareBody = "¡Mira este lugar en EXPLORA! " + localizacion.getNombre();
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + localizacion.getNombre());
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(shareIntent, "Compartir lugar"));
         });
@@ -422,10 +397,11 @@ public class MapaActivity extends AppCompatActivity {
         bottomSheet.setContentView(sheetView);
 
         // Configurar comportamiento del bottom sheet
-        android.view.View bottomSheetInternal = bottomSheet.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        if (bottomSheetInternal != null) {
-            com.google.android.material.bottomsheet.BottomSheetBehavior<?> behavior =
-                com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheetInternal);
+        bottomSheet.getBehavior().setPeekHeight(720);
+        bottomSheet.getBehavior().setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED);
+
+        com.google.android.material.bottomsheet.BottomSheetBehavior<?> behavior = bottomSheet.getBehavior();
+        if (behavior != null) {
 
             // Configurar peek height (altura cuando está colapsado - mostrar imagen + nombre completo)
             behavior.setPeekHeight(720);
@@ -550,20 +526,4 @@ public class MapaActivity extends AppCompatActivity {
         }
     }
 
-    // Clase interna para los datos mock
-    private static class PlaceMock {
-        String name;
-        String category;
-        GeoPoint position;
-        String description;
-        float rating;
-
-        PlaceMock(String name, String category, GeoPoint position, String description, float rating) {
-            this.name = name;
-            this.category = category;
-            this.position = position;
-            this.description = description;
-            this.rating = rating;
-        }
-    }
 }
