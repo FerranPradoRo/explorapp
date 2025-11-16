@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla reviews
- */
 public class Review {
     private long reviewId;
     private long usuarioId;
@@ -14,18 +11,15 @@ public class Review {
     private int likes;
     private boolean verificado;
 
-    // Campos extra del JOIN
     private String usuarioNombre;
     private String usuarioApellido;
     private String usuarioFotoPerfil;
 
-    // Constructor vacío
     public Review() {
         this.likes = 0;
         this.verificado = false;
     }
 
-    // Constructor completo
     public Review(long reviewId, long usuarioId, long localizacionId, int calificacion,
                   String comentario, long fechaVisita, long fechaReview, int likes,
                   boolean verificado) {
@@ -40,7 +34,6 @@ public class Review {
         this.verificado = verificado;
     }
 
-    // Getters y Setters
     public long getReviewId() {
         return reviewId;
     }

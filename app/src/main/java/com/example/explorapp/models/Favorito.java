@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla favoritos
- */
 public class Favorito {
     private long favoritoId;
     private long usuarioId;
@@ -10,14 +7,11 @@ public class Favorito {
     private long fechaAgregado;
     private String notasPersonales;
 
-    // Objeto Localizacion completo del JOIN
     private Localizacion localizacion;
 
-    // Constructor vacío
     public Favorito() {
     }
 
-    // Constructor completo
     public Favorito(long favoritoId, long usuarioId, long localizacionId,
                     long fechaAgregado, String notasPersonales) {
         this.favoritoId = favoritoId;
@@ -27,7 +21,6 @@ public class Favorito {
         this.notasPersonales = notasPersonales;
     }
 
-    // Getters y Setters
     public long getFavoritoId() {
         return favoritoId;
     }

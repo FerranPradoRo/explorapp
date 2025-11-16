@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla usuarios
- */
 public class Usuario {
     private long usuarioId;
     private String nombre;
@@ -14,12 +11,10 @@ public class Usuario {
     private String fotoPerfil;
     private boolean activo;
 
-    // Constructor vacío
     public Usuario() {
         this.activo = true;
     }
 
-    // Constructor completo
     public Usuario(long usuarioId, String nombre, String apellido, String email,
                    String passwordHash, long fechaRegistro, String paisOrigen,
                    String fotoPerfil, boolean activo) {
@@ -34,7 +29,6 @@ public class Usuario {
         this.activo = activo;
     }
 
-    // Getters y Setters
     public long getUsuarioId() {
         return usuarioId;
     }

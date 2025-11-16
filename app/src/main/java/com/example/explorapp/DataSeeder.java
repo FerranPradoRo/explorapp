@@ -3,10 +3,6 @@ package com.example.explorapp;
 import android.content.Context;
 import android.database.Cursor;
 
-/**
- * DataSeeder - Clase para poblar la base de datos con datos iniciales
- * Incluye categorías y las localizaciones de Guadalajara
- */
 public class DataSeeder {
 
     private DatabaseHelper dbHelper;
@@ -17,10 +13,6 @@ public class DataSeeder {
         this.dbHelper = new DatabaseHelper(context);
     }
 
-    /**
-     * Poblar la base de datos con datos iniciales
-     * Solo se ejecuta si la base de datos está vacía
-     */
     public void seedDatabase() {
         // Verificar si ya hay datos
         if (isDatabaseSeeded()) {
@@ -34,9 +26,6 @@ public class DataSeeder {
         seedLocalizacionesGuadalajara(categoriaIds);
     }
 
-    /**
-     * Verificar si la base de datos ya tiene datos
-     */
     private boolean isDatabaseSeeded() {
         Cursor cursor = dbHelper.obtenerTodasCategorias();
         boolean hasData = cursor.getCount() > 0;
@@ -44,10 +33,6 @@ public class DataSeeder {
         return hasData;
     }
 
-    /**
-     * Poblar categorías iniciales
-     * @return Array con los IDs de las categorías creadas
-     */
     private long[] seedCategorias() {
         long[] ids = new long[7];
 
@@ -260,17 +245,10 @@ public class DataSeeder {
         );
     }
 
-    /**
-     * Limpiar todos los datos de la base de datos
-     * USAR CON PRECAUCIÓN - Borra todos los datos
-     */
     public void clearDatabase() {
         dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 1);
     }
 
-    /**
-     * Re-poblar la base de datos (limpia y vuelve a insertar datos)
-     */
     public void reseedDatabase() {
         clearDatabase();
         seedDatabase();

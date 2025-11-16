@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla imagenes_localizaciones
- */
 public class ImagenLocalizacion {
     private long imagenId;
     private long localizacionId;
@@ -11,13 +8,11 @@ public class ImagenLocalizacion {
     private int orden;
     private long fechaSubida;
 
-    // Constructor vacío
     public ImagenLocalizacion() {
         this.esPrincipal = false;
         this.orden = 0;
     }
 
-    // Constructor completo
     public ImagenLocalizacion(long imagenId, long localizacionId, String urlImagen,
                               boolean esPrincipal, int orden, long fechaSubida) {
         this.imagenId = imagenId;
@@ -28,7 +23,6 @@ public class ImagenLocalizacion {
         this.fechaSubida = fechaSubida;
     }
 
-    // Getters y Setters
     public long getImagenId() {
         return imagenId;
     }

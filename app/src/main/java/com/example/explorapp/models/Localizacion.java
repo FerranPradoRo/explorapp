@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla localizaciones
- */
 public class Localizacion {
     private long localizacionId;
     private String nombre;
@@ -22,12 +19,10 @@ public class Localizacion {
     private long fechaCreacion;
     private boolean activo;
 
-    // Constructor vacío
     public Localizacion() {
         this.activo = true;
     }
 
-    // Constructor completo
     public Localizacion(long localizacionId, String nombre, String descripcion,
                         double latitud, double longitud, String direccion, String ciudad,
                         Long categoriaId, double costoPromedio, String horarioApertura,
@@ -51,7 +46,6 @@ public class Localizacion {
         this.activo = activo;
     }
 
-    // Getters y Setters
     public long getLocalizacionId() {
         return localizacionId;
     }

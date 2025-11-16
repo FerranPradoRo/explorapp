@@ -1,8 +1,5 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla categorias
- */
 public class Categoria {
     private long categoriaId;
     private String nombre;
@@ -10,11 +7,9 @@ public class Categoria {
     private String icono;
     private String color;
 
-    // Constructor vacío
     public Categoria() {
     }
 
-    // Constructor completo
     public Categoria(long categoriaId, String nombre, String descripcion,
                      String icono, String color) {
         this.categoriaId = categoriaId;
@@ -24,7 +19,6 @@ public class Categoria {
         this.color = color;
     }
 
-    // Getters y Setters
     public long getCategoriaId() {
         return categoriaId;
     }

@@ -1,24 +1,18 @@
 package com.example.explorapp.models;
 
-/**
- * Modelo de datos para la tabla preferencias_usuario
- */
 public class PreferenciaUsuario {
     private long preferenciaId;
     private long usuarioId;
     private long categoriaId;
     private int nivelInteres;
 
-    // Campos extra del JOIN
     private String categoriaNombre;
     private String categoriaIcono;
     private String categoriaColor;
 
-    // Constructor vacío
     public PreferenciaUsuario() {
     }
 
-    // Constructor completo
     public PreferenciaUsuario(long preferenciaId, long usuarioId, long categoriaId,
                               int nivelInteres) {
         this.preferenciaId = preferenciaId;
@@ -27,7 +21,6 @@ public class PreferenciaUsuario {
         this.nivelInteres = nivelInteres;
     }
 
-    // Getters y Setters
     public long getPreferenciaId() {
         return preferenciaId;
     }
