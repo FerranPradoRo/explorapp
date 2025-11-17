@@ -32,10 +32,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".InicioActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".BuscadorActivity"
             android:exported="false" />
 
