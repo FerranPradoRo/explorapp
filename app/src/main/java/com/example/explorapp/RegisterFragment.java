@@ -111,7 +111,7 @@ public class RegisterFragment extends Fragment {
         }
 
         String passwordHash = LoginFragment.hashPassword(password);
-        long userId = dbHelper.insertarUsuario(nombre, apellido, email, passwordHash,
+        long userId = dbHelper.insertUser(nombre, apellido, email, passwordHash,
                 pais.isEmpty() ? null : pais, null);
 
         if (userId != -1) {
@@ -132,7 +132,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private boolean emailExists(String email) {
-        Cursor cursor = dbHelper.buscarUsuarioPorEmail(email);
+        Cursor cursor = dbHelper.findUserByEmail(email);
         boolean exists = cursor != null && cursor.getCount() > 0;
         if (cursor != null) {
             cursor.close();

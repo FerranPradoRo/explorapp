@@ -76,12 +76,12 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        Cursor cursor = dbHelper.buscarUsuarioPorEmail(email);
+        Cursor cursor = dbHelper.findUserByEmail(email);
 
         if (cursor != null && cursor.moveToFirst()) {
-            long userId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_ID));
-            String storedPasswordHash = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_PASSWORD_HASH));
-            boolean activo = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_ACTIVO)) == 1;
+            long userId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ID));
+            String storedPasswordHash = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_PASSWORD_HASH));
+            boolean activo = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ACTIVE)) == 1;
 
             cursor.close();
 
