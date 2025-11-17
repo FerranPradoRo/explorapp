@@ -109,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_explore) {
-                startActivity(new Intent(this, MapaActivity.class));
+                startActivity(new Intent(this, MapActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_favorites) {
@@ -117,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (itemId == R.id.nav_search) {
-                startActivity(new Intent(this, BuscadorActivity.class));
+                startActivity(new Intent(this, SearchActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_profile) {

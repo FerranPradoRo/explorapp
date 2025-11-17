@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToMainApp() {
-        Intent intent = new Intent(this, BuscadorActivity.class);
+        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
         finish();
     }

@@ -32,18 +32,12 @@
             android:exported="false" />
 
         <activity
-            android:name=".BuscadorActivity"
+            android:name=".SearchActivity"
             android:exported="false" />
 
         <activity
-            android:name=".MapaActivity"
+            android:name=".MapActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".PlaceDetailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Explorapp"
-            android:parentActivityName=".MapaActivity" />
 
         <activity
             android:name=".FavoritesActivity"

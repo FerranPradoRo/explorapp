@@ -124,7 +124,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_popup_reminder"
-                            android:tint="@color/dark_gray" />
+                            app:tint="@color/dark_gray" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -156,7 +156,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_rotate"
-                            android:tint="@color/dark_gray" />
+                            app:tint="@color/dark_gray" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -187,7 +187,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_info_details"
-                            android:tint="@color/dark_gray" />
+                            app:tint="@color/dark_gray" />
 
                         <TextView
                             android:layout_width="0dp"

@@ -13,7 +13,7 @@ import android.content.Intent;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class BuscadorActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
     private BottomNavigationView bottomNavigationView;
@@ -32,19 +32,19 @@ public class BuscadorActivity extends AppCompatActivity {
 
         AutoCompleteTextView autoComplete = findViewById(R.id.autoCompleteSearch);
 
-        String[] ciudades = {"Guadalajara, Jalisco, México"};
+        String[] cities = {"Guadalajara, Jalisco, México"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, ciudades);
+                android.R.layout.simple_dropdown_item_1line, cities);
 
         autoComplete.setAdapter(adapter);
 
         autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String ciudadSeleccionada = (String) parent.getItemAtPosition(position);
+                String selectedCity = (String) parent.getItemAtPosition(position);
 
-                Intent intent = new Intent(BuscadorActivity.this, MapaActivity.class);
+                Intent intent = new Intent(SearchActivity.this, MapActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -57,7 +57,7 @@ public class BuscadorActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_explore) {
-                startActivity(new Intent(this, MapaActivity.class));
+                startActivity(new Intent(this, MapActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_favorites) {

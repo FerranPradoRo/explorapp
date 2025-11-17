@@ -74,7 +74,7 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesAda
         setSupportActionBar(toolbar);
 
         btnExplore.setOnClickListener(v -> {
-            Intent intent = new Intent(FavoritesActivity.this, MapaActivity.class);
+            Intent intent = new Intent(FavoritesActivity.this, MapActivity.class);
             startActivity(intent);
         });
     }
@@ -188,13 +188,13 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesAda
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_explore) {
-                startActivity(new Intent(this, MapaActivity.class));
+                startActivity(new Intent(this, MapActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_favorites) {
                 return true;
             } else if (itemId == R.id.nav_search) {
-                startActivity(new Intent(this, BuscadorActivity.class));
+                startActivity(new Intent(this, SearchActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_profile) {
