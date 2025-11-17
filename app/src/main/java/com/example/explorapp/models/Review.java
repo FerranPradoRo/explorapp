@@ -2,36 +2,36 @@ package com.example.explorapp.models;
 
 public class Review {
     private long reviewId;
-    private long usuarioId;
-    private long localizacionId;
-    private int calificacion;
-    private String comentario;
-    private long fechaVisita;
-    private long fechaReview;
+    private long userId;
+    private long locationId;
+    private int rating;
+    private String comment;
+    private long visitDate;
+    private long reviewDate;
     private int likes;
-    private boolean verificado;
+    private boolean verified;
 
-    private String usuarioNombre;
-    private String usuarioApellido;
-    private String usuarioFotoPerfil;
+    private String userFirstName;
+    private String userLastName;
+    private String userProfilePicture;
 
     public Review() {
         this.likes = 0;
-        this.verificado = false;
+        this.verified = false;
     }
 
-    public Review(long reviewId, long usuarioId, long localizacionId, int calificacion,
-                  String comentario, long fechaVisita, long fechaReview, int likes,
-                  boolean verificado) {
+    public Review(long reviewId, long userId, long locationId, int rating,
+                  String comment, long visitDate, long reviewDate, int likes,
+                  boolean verified) {
         this.reviewId = reviewId;
-        this.usuarioId = usuarioId;
-        this.localizacionId = localizacionId;
-        this.calificacion = calificacion;
-        this.comentario = comentario;
-        this.fechaVisita = fechaVisita;
-        this.fechaReview = fechaReview;
+        this.userId = userId;
+        this.locationId = locationId;
+        this.rating = rating;
+        this.comment = comment;
+        this.visitDate = visitDate;
+        this.reviewDate = reviewDate;
         this.likes = likes;
-        this.verificado = verificado;
+        this.verified = verified;
     }
 
     public long getReviewId() {
@@ -42,52 +42,52 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public long getUsuarioId() {
-        return usuarioId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUsuarioId(long usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getLocalizacionId() {
-        return localizacionId;
+    public long getLocationId() {
+        return locationId;
     }
 
-    public void setLocalizacionId(long localizacionId) {
-        this.localizacionId = localizacionId;
+    public void setLocationId(long locationId) {
+        this.locationId = locationId;
     }
 
-    public int getCalificacion() {
-        return calificacion;
+    public int getRating() {
+        return rating;
     }
 
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
-    public String getComentario() {
-        return comentario;
+    public String getComment() {
+        return comment;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public long getFechaVisita() {
-        return fechaVisita;
+    public long getVisitDate() {
+        return visitDate;
     }
 
-    public void setFechaVisita(long fechaVisita) {
-        this.fechaVisita = fechaVisita;
+    public void setVisitDate(long visitDate) {
+        this.visitDate = visitDate;
     }
 
-    public long getFechaReview() {
-        return fechaReview;
+    public long getReviewDate() {
+        return reviewDate;
     }
 
-    public void setFechaReview(long fechaReview) {
-        this.fechaReview = fechaReview;
+    public void setReviewDate(long reviewDate) {
+        this.reviewDate = reviewDate;
     }
 
     public int getLikes() {
@@ -98,39 +98,39 @@ public class Review {
         this.likes = likes;
     }
 
-    public boolean isVerificado() {
-        return verificado;
+    public boolean isVerified() {
+        return verified;
     }
 
-    public void setVerificado(boolean verificado) {
-        this.verificado = verificado;
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
-    public String getUsuarioNombre() {
-        return usuarioNombre;
+    public String getUserFirstName() {
+        return userFirstName;
     }
 
-    public void setUsuarioNombre(String usuarioNombre) {
-        this.usuarioNombre = usuarioNombre;
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
     }
 
-    public String getUsuarioApellido() {
-        return usuarioApellido;
+    public String getUserLastName() {
+        return userLastName;
     }
 
-    public void setUsuarioApellido(String usuarioApellido) {
-        this.usuarioApellido = usuarioApellido;
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
     }
 
-    public String getUsuarioFotoPerfil() {
-        return usuarioFotoPerfil;
+    public String getUserProfilePicture() {
+        return userProfilePicture;
     }
 
-    public void setUsuarioFotoPerfil(String usuarioFotoPerfil) {
-        this.usuarioFotoPerfil = usuarioFotoPerfil;
+    public void setUserProfilePicture(String userProfilePicture) {
+        this.userProfilePicture = userProfilePicture;
     }
 
-    public String getUsuarioNombreCompleto() {
-        return usuarioNombre + " " + usuarioApellido;
+    public String getUserFullName() {
+        return userFirstName + " " + userLastName;
     }
 }
