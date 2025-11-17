@@ -174,39 +174,6 @@ public class ProfileActivity extends AppCompatActivity {
             .show();
     }
 
-    // Método deshabilitado - funcionalidad pendiente
-    /*
-    private void showLanguageDialog() {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        android.view.LayoutInflater inflater = getLayoutInflater();
-        android.view.View dialogView = inflater.inflate(R.layout.dialog_language, null);
-        builder.setView(dialogView);
-
-        android.widget.RadioGroup radioGroup = dialogView.findViewById(R.id.language_radio_group);
-
-        builder.setPositiveButton("Aplicar", (dialog, which) -> {
-            int selectedId = radioGroup.getCheckedRadioButtonId();
-            String language = "Español";
-
-            if (selectedId == R.id.radio_spanish) {
-                language = "Español";
-            } else if (selectedId == R.id.radio_english) {
-                language = "English";
-            } else if (selectedId == R.id.radio_french) {
-                language = "Français";
-            } else if (selectedId == R.id.radio_german) {
-                language = "Deutsch";
-            }
-
-            Toast.makeText(this, "Idioma seleccionado: " + language, Toast.LENGTH_SHORT).show();
-        });
-
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-
-        builder.create().show();
-    }
-    */
-
     private void showAboutDialog() {
         new android.app.AlertDialog.Builder(this)
             .setTitle("Acerca de EXPLORA")
