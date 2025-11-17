@@ -14,82 +14,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Nombre y versión de la base de datos
     private static final String DATABASE_NAME = "explorapp.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    // ==================== TABLA: usuarios ====================
-    public static final String TABLE_USUARIOS = "usuarios";
-    public static final String COL_USUARIO_ID = "usuario_id";
-    public static final String COL_USUARIO_NOMBRE = "nombre";
-    public static final String COL_USUARIO_APELLIDO = "apellido";
-    public static final String COL_USUARIO_EMAIL = "email";
-    public static final String COL_USUARIO_PASSWORD_HASH = "password_hash";
-    public static final String COL_USUARIO_FECHA_REGISTRO = "fecha_registro";
-    public static final String COL_USUARIO_PAIS_ORIGEN = "pais_origen";
-    public static final String COL_USUARIO_FOTO_PERFIL = "foto_perfil";
-    public static final String COL_USUARIO_ACTIVO = "activo";
+    // ==================== TABLA: users ====================
+    public static final String TABLE_USERS = "users";
+    public static final String COL_USER_ID = "user_id";
+    public static final String COL_USER_FIRST_NAME = "first_name";
+    public static final String COL_USER_LAST_NAME = "last_name";
+    public static final String COL_USER_EMAIL = "email";
+    public static final String COL_USER_PASSWORD_HASH = "password_hash";
+    public static final String COL_USER_REGISTRATION_DATE = "registration_date";
+    public static final String COL_USER_COUNTRY_OF_ORIGIN = "country_of_origin";
+    public static final String COL_USER_PROFILE_PICTURE = "profile_picture";
+    public static final String COL_USER_ACTIVE = "active";
 
-    // ==================== TABLA: categorias ====================
-    public static final String TABLE_CATEGORIAS = "categorias";
-    public static final String COL_CATEGORIA_ID = "categoria_id";
-    public static final String COL_CATEGORIA_NOMBRE = "nombre";
-    public static final String COL_CATEGORIA_DESCRIPCION = "descripcion";
-    public static final String COL_CATEGORIA_ICONO = "icono";
-    public static final String COL_CATEGORIA_COLOR = "color";
+    // ==================== TABLA: categories ====================
+    public static final String TABLE_CATEGORIES = "categories";
+    public static final String COL_CATEGORY_ID = "category_id";
+    public static final String COL_CATEGORY_NAME = "name";
+    public static final String COL_CATEGORY_DESCRIPTION = "description";
+    public static final String COL_CATEGORY_ICON = "icon";
+    public static final String COL_CATEGORY_COLOR = "color";
 
-    // ==================== TABLA: localizaciones ====================
-    public static final String TABLE_LOCALIZACIONES = "localizaciones";
-    public static final String COL_LOCALIZACION_ID = "localizacion_id";
-    public static final String COL_LOCALIZACION_NOMBRE = "nombre";
-    public static final String COL_LOCALIZACION_DESCRIPCION = "descripcion";
-    public static final String COL_LOCALIZACION_LATITUD = "latitud";
-    public static final String COL_LOCALIZACION_LONGITUD = "longitud";
-    public static final String COL_LOCALIZACION_DIRECCION = "direccion";
-    public static final String COL_LOCALIZACION_CIUDAD = "ciudad";
-    public static final String COL_LOCALIZACION_CATEGORIA_ID = "categoria_id";
-    public static final String COL_LOCALIZACION_COSTO_PROMEDIO = "costo_promedio";
-    public static final String COL_LOCALIZACION_HORARIO_APERTURA = "horario_apertura";
-    public static final String COL_LOCALIZACION_HORARIO_CIERRE = "horario_cierre";
-    public static final String COL_LOCALIZACION_TELEFONO = "telefono";
-    public static final String COL_LOCALIZACION_SITIO_WEB = "sitio_web";
-    public static final String COL_LOCALIZACION_POPULARIDAD_SCORE = "popularidad_score";
-    public static final String COL_LOCALIZACION_FECHA_CREACION = "fecha_creacion";
-    public static final String COL_LOCALIZACION_ACTIVO = "activo";
+    // ==================== TABLA: locations ====================
+    public static final String TABLE_LOCATIONS = "locations";
+    public static final String COL_LOCATION_ID = "location_id";
+    public static final String COL_LOCATION_NAME = "name";
+    public static final String COL_LOCATION_DESCRIPTION = "description";
+    public static final String COL_LOCATION_LATITUDE = "latitude";
+    public static final String COL_LOCATION_LONGITUDE = "longitude";
+    public static final String COL_LOCATION_ADDRESS = "address";
+    public static final String COL_LOCATION_CITY = "city";
+    public static final String COL_LOCATION_CATEGORY_ID = "category_id";
+    public static final String COL_LOCATION_AVERAGE_COST = "average_cost";
+    public static final String COL_LOCATION_OPENING_TIME = "opening_time";
+    public static final String COL_LOCATION_CLOSING_TIME = "closing_time";
+    public static final String COL_LOCATION_PHONE = "phone";
+    public static final String COL_LOCATION_WEBSITE = "website";
+    public static final String COL_LOCATION_POPULARITY_SCORE = "popularity_score";
+    public static final String COL_LOCATION_CREATION_DATE = "creation_date";
+    public static final String COL_LOCATION_ACTIVE = "active";
 
-    // ==================== TABLA: imagenes_localizaciones ====================
-    public static final String TABLE_IMAGENES_LOCALIZACIONES = "imagenes_localizaciones";
-    public static final String COL_IMAGEN_ID = "imagen_id";
-    public static final String COL_IMAGEN_LOCALIZACION_ID = "localizacion_id";
-    public static final String COL_IMAGEN_URL = "url_imagen";
-    public static final String COL_IMAGEN_ES_PRINCIPAL = "es_principal";
-    public static final String COL_IMAGEN_ORDEN = "orden";
-    public static final String COL_IMAGEN_FECHA_SUBIDA = "fecha_subida";
+    // ==================== TABLA: location_images ====================
+    public static final String TABLE_LOCATION_IMAGES = "location_images";
+    public static final String COL_IMAGE_ID = "image_id";
+    public static final String COL_IMAGE_LOCATION_ID = "location_id";
+    public static final String COL_IMAGE_URL = "image_url";
+    public static final String COL_IMAGE_IS_PRIMARY = "is_primary";
+    public static final String COL_IMAGE_ORDER = "display_order";
+    public static final String COL_IMAGE_UPLOAD_DATE = "upload_date";
 
     // ==================== TABLA: reviews ====================
     public static final String TABLE_REVIEWS = "reviews";
     public static final String COL_REVIEW_ID = "review_id";
-    public static final String COL_REVIEW_USUARIO_ID = "usuario_id";
-    public static final String COL_REVIEW_LOCALIZACION_ID = "localizacion_id";
-    public static final String COL_REVIEW_CALIFICACION = "calificacion";
-    public static final String COL_REVIEW_COMENTARIO = "comentario";
-    public static final String COL_REVIEW_FECHA_VISITA = "fecha_visita";
-    public static final String COL_REVIEW_FECHA_REVIEW = "fecha_review";
+    public static final String COL_REVIEW_USER_ID = "user_id";
+    public static final String COL_REVIEW_LOCATION_ID = "location_id";
+    public static final String COL_REVIEW_RATING = "rating";
+    public static final String COL_REVIEW_COMMENT = "comment";
+    public static final String COL_REVIEW_VISIT_DATE = "visit_date";
+    public static final String COL_REVIEW_DATE = "review_date";
     public static final String COL_REVIEW_LIKES = "likes";
-    public static final String COL_REVIEW_VERIFICADO = "verificado";
+    public static final String COL_REVIEW_VERIFIED = "verified";
 
-    // ==================== TABLA: favoritos ====================
-    public static final String TABLE_FAVORITOS = "favoritos";
-    public static final String COL_FAVORITO_ID = "favorito_id";
-    public static final String COL_FAVORITO_USUARIO_ID = "usuario_id";
-    public static final String COL_FAVORITO_LOCALIZACION_ID = "localizacion_id";
-    public static final String COL_FAVORITO_FECHA_AGREGADO = "fecha_agregado";
-    public static final String COL_FAVORITO_NOTAS_PERSONALES = "notas_personales";
+    // ==================== TABLA: favorites ====================
+    public static final String TABLE_FAVORITES = "favorites";
+    public static final String COL_FAVORITE_ID = "favorite_id";
+    public static final String COL_FAVORITE_USER_ID = "user_id";
+    public static final String COL_FAVORITE_LOCATION_ID = "location_id";
+    public static final String COL_FAVORITE_DATE_ADDED = "date_added";
+    public static final String COL_FAVORITE_PERSONAL_NOTES = "personal_notes";
 
-    // ==================== TABLA: preferencias_usuario ====================
-    public static final String TABLE_PREFERENCIAS_USUARIO = "preferencias_usuario";
-    public static final String COL_PREFERENCIA_ID = "preferencia_id";
-    public static final String COL_PREFERENCIA_USUARIO_ID = "usuario_id";
-    public static final String COL_PREFERENCIA_CATEGORIA_ID = "categoria_id";
-    public static final String COL_PREFERENCIA_NIVEL_INTERES = "nivel_interes";
+    // ==================== TABLA: user_preferences ====================
+    public static final String TABLE_USER_PREFERENCES = "user_preferences";
+    public static final String COL_PREFERENCE_ID = "preference_id";
+    public static final String COL_PREFERENCE_USER_ID = "user_id";
+    public static final String COL_PREFERENCE_CATEGORY_ID = "category_id";
+    public static final String COL_PREFERENCE_INTEREST_LEVEL = "interest_level";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -99,128 +99,128 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("PRAGMA foreign_keys=ON;");
 
-        String createUsuarios = "CREATE TABLE " + TABLE_USUARIOS + " ("
-                + COL_USUARIO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_USUARIO_NOMBRE + " TEXT NOT NULL, "
-                + COL_USUARIO_APELLIDO + " TEXT NOT NULL, "
-                + COL_USUARIO_EMAIL + " TEXT UNIQUE NOT NULL, "
-                + COL_USUARIO_PASSWORD_HASH + " TEXT NOT NULL, "
-                + COL_USUARIO_FECHA_REGISTRO + " INTEGER DEFAULT (strftime('%s', 'now')), "
-                + COL_USUARIO_PAIS_ORIGEN + " TEXT, "
-                + COL_USUARIO_FOTO_PERFIL + " TEXT, "
-                + COL_USUARIO_ACTIVO + " INTEGER DEFAULT 1"
+        String createUsers = "CREATE TABLE " + TABLE_USERS + " ("
+                + COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_USER_FIRST_NAME + " TEXT NOT NULL, "
+                + COL_USER_LAST_NAME + " TEXT NOT NULL, "
+                + COL_USER_EMAIL + " TEXT UNIQUE NOT NULL, "
+                + COL_USER_PASSWORD_HASH + " TEXT NOT NULL, "
+                + COL_USER_REGISTRATION_DATE + " INTEGER DEFAULT (strftime('%s', 'now')), "
+                + COL_USER_COUNTRY_OF_ORIGIN + " TEXT, "
+                + COL_USER_PROFILE_PICTURE + " TEXT, "
+                + COL_USER_ACTIVE + " INTEGER DEFAULT 1"
                 + ")";
-        db.execSQL(createUsuarios);
+        db.execSQL(createUsers);
 
-        String createCategorias = "CREATE TABLE " + TABLE_CATEGORIAS + " ("
-                + COL_CATEGORIA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_CATEGORIA_NOMBRE + " TEXT NOT NULL, "
-                + COL_CATEGORIA_DESCRIPCION + " TEXT, "
-                + COL_CATEGORIA_ICONO + " TEXT, "
-                + COL_CATEGORIA_COLOR + " TEXT"
+        String createCategories = "CREATE TABLE " + TABLE_CATEGORIES + " ("
+                + COL_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_CATEGORY_NAME + " TEXT NOT NULL, "
+                + COL_CATEGORY_DESCRIPTION + " TEXT, "
+                + COL_CATEGORY_ICON + " TEXT, "
+                + COL_CATEGORY_COLOR + " TEXT"
                 + ")";
-        db.execSQL(createCategorias);
+        db.execSQL(createCategories);
 
-        String createLocalizaciones = "CREATE TABLE " + TABLE_LOCALIZACIONES + " ("
-                + COL_LOCALIZACION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_LOCALIZACION_NOMBRE + " TEXT NOT NULL, "
-                + COL_LOCALIZACION_DESCRIPCION + " TEXT, "
-                + COL_LOCALIZACION_LATITUD + " REAL NOT NULL, "
-                + COL_LOCALIZACION_LONGITUD + " REAL NOT NULL, "
-                + COL_LOCALIZACION_DIRECCION + " TEXT, "
-                + COL_LOCALIZACION_CIUDAD + " TEXT NOT NULL, "
-                + COL_LOCALIZACION_CATEGORIA_ID + " INTEGER, "
-                + COL_LOCALIZACION_COSTO_PROMEDIO + " REAL DEFAULT 0, "
-                + COL_LOCALIZACION_HORARIO_APERTURA + " TEXT, "
-                + COL_LOCALIZACION_HORARIO_CIERRE + " TEXT, "
-                + COL_LOCALIZACION_TELEFONO + " TEXT, "
-                + COL_LOCALIZACION_SITIO_WEB + " TEXT, "
-                + COL_LOCALIZACION_POPULARIDAD_SCORE + " REAL DEFAULT 0, "
-                + COL_LOCALIZACION_FECHA_CREACION + " INTEGER DEFAULT (strftime('%s', 'now')), "
-                + COL_LOCALIZACION_ACTIVO + " INTEGER DEFAULT 1, "
-                + "FOREIGN KEY (" + COL_LOCALIZACION_CATEGORIA_ID + ") REFERENCES "
-                + TABLE_CATEGORIAS + "(" + COL_CATEGORIA_ID + ") ON DELETE SET NULL"
+        String createLocations = "CREATE TABLE " + TABLE_LOCATIONS + " ("
+                + COL_LOCATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_LOCATION_NAME + " TEXT NOT NULL, "
+                + COL_LOCATION_DESCRIPTION + " TEXT, "
+                + COL_LOCATION_LATITUDE + " REAL NOT NULL, "
+                + COL_LOCATION_LONGITUDE + " REAL NOT NULL, "
+                + COL_LOCATION_ADDRESS + " TEXT, "
+                + COL_LOCATION_CITY + " TEXT NOT NULL, "
+                + COL_LOCATION_CATEGORY_ID + " INTEGER, "
+                + COL_LOCATION_AVERAGE_COST + " REAL DEFAULT 0, "
+                + COL_LOCATION_OPENING_TIME + " TEXT, "
+                + COL_LOCATION_CLOSING_TIME + " TEXT, "
+                + COL_LOCATION_PHONE + " TEXT, "
+                + COL_LOCATION_WEBSITE + " TEXT, "
+                + COL_LOCATION_POPULARITY_SCORE + " REAL DEFAULT 0, "
+                + COL_LOCATION_CREATION_DATE + " INTEGER DEFAULT (strftime('%s', 'now')), "
+                + COL_LOCATION_ACTIVE + " INTEGER DEFAULT 1, "
+                + "FOREIGN KEY (" + COL_LOCATION_CATEGORY_ID + ") REFERENCES "
+                + TABLE_CATEGORIES + "(" + COL_CATEGORY_ID + ") ON DELETE SET NULL"
                 + ")";
-        db.execSQL(createLocalizaciones);
+        db.execSQL(createLocations);
 
-        String createImagenes = "CREATE TABLE " + TABLE_IMAGENES_LOCALIZACIONES + " ("
-                + COL_IMAGEN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_IMAGEN_LOCALIZACION_ID + " INTEGER NOT NULL, "
-                + COL_IMAGEN_URL + " TEXT NOT NULL, "
-                + COL_IMAGEN_ES_PRINCIPAL + " INTEGER DEFAULT 0, "
-                + COL_IMAGEN_ORDEN + " INTEGER DEFAULT 0, "
-                + COL_IMAGEN_FECHA_SUBIDA + " INTEGER DEFAULT (strftime('%s', 'now')), "
-                + "FOREIGN KEY (" + COL_IMAGEN_LOCALIZACION_ID + ") REFERENCES "
-                + TABLE_LOCALIZACIONES + "(" + COL_LOCALIZACION_ID + ") ON DELETE CASCADE"
+        String createImages = "CREATE TABLE " + TABLE_LOCATION_IMAGES + " ("
+                + COL_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_IMAGE_LOCATION_ID + " INTEGER NOT NULL, "
+                + COL_IMAGE_URL + " TEXT NOT NULL, "
+                + COL_IMAGE_IS_PRIMARY + " INTEGER DEFAULT 0, "
+                + COL_IMAGE_ORDER + " INTEGER DEFAULT 0, "
+                + COL_IMAGE_UPLOAD_DATE + " INTEGER DEFAULT (strftime('%s', 'now')), "
+                + "FOREIGN KEY (" + COL_IMAGE_LOCATION_ID + ") REFERENCES "
+                + TABLE_LOCATIONS + "(" + COL_LOCATION_ID + ") ON DELETE CASCADE"
                 + ")";
-        db.execSQL(createImagenes);
+        db.execSQL(createImages);
 
         String createReviews = "CREATE TABLE " + TABLE_REVIEWS + " ("
                 + COL_REVIEW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_REVIEW_USUARIO_ID + " INTEGER NOT NULL, "
-                + COL_REVIEW_LOCALIZACION_ID + " INTEGER NOT NULL, "
-                + COL_REVIEW_CALIFICACION + " INTEGER NOT NULL CHECK(calificacion >= 1 AND calificacion <= 5), "
-                + COL_REVIEW_COMENTARIO + " TEXT, "
-                + COL_REVIEW_FECHA_VISITA + " INTEGER, "
-                + COL_REVIEW_FECHA_REVIEW + " INTEGER DEFAULT (strftime('%s', 'now')), "
+                + COL_REVIEW_USER_ID + " INTEGER NOT NULL, "
+                + COL_REVIEW_LOCATION_ID + " INTEGER NOT NULL, "
+                + COL_REVIEW_RATING + " INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5), "
+                + COL_REVIEW_COMMENT + " TEXT, "
+                + COL_REVIEW_VISIT_DATE + " INTEGER, "
+                + COL_REVIEW_DATE + " INTEGER DEFAULT (strftime('%s', 'now')), "
                 + COL_REVIEW_LIKES + " INTEGER DEFAULT 0, "
-                + COL_REVIEW_VERIFICADO + " INTEGER DEFAULT 0, "
-                + "FOREIGN KEY (" + COL_REVIEW_USUARIO_ID + ") REFERENCES "
-                + TABLE_USUARIOS + "(" + COL_USUARIO_ID + ") ON DELETE CASCADE, "
-                + "FOREIGN KEY (" + COL_REVIEW_LOCALIZACION_ID + ") REFERENCES "
-                + TABLE_LOCALIZACIONES + "(" + COL_LOCALIZACION_ID + ") ON DELETE CASCADE"
+                + COL_REVIEW_VERIFIED + " INTEGER DEFAULT 0, "
+                + "FOREIGN KEY (" + COL_REVIEW_USER_ID + ") REFERENCES "
+                + TABLE_USERS + "(" + COL_USER_ID + ") ON DELETE CASCADE, "
+                + "FOREIGN KEY (" + COL_REVIEW_LOCATION_ID + ") REFERENCES "
+                + TABLE_LOCATIONS + "(" + COL_LOCATION_ID + ") ON DELETE CASCADE"
                 + ")";
         db.execSQL(createReviews);
 
-        String createFavoritos = "CREATE TABLE " + TABLE_FAVORITOS + " ("
-                + COL_FAVORITO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_FAVORITO_USUARIO_ID + " INTEGER NOT NULL, "
-                + COL_FAVORITO_LOCALIZACION_ID + " INTEGER NOT NULL, "
-                + COL_FAVORITO_FECHA_AGREGADO + " INTEGER DEFAULT (strftime('%s', 'now')), "
-                + COL_FAVORITO_NOTAS_PERSONALES + " TEXT, "
-                + "UNIQUE(" + COL_FAVORITO_USUARIO_ID + ", " + COL_FAVORITO_LOCALIZACION_ID + "), "
-                + "FOREIGN KEY (" + COL_FAVORITO_USUARIO_ID + ") REFERENCES "
-                + TABLE_USUARIOS + "(" + COL_USUARIO_ID + ") ON DELETE CASCADE, "
-                + "FOREIGN KEY (" + COL_FAVORITO_LOCALIZACION_ID + ") REFERENCES "
-                + TABLE_LOCALIZACIONES + "(" + COL_LOCALIZACION_ID + ") ON DELETE CASCADE"
+        String createFavorites = "CREATE TABLE " + TABLE_FAVORITES + " ("
+                + COL_FAVORITE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_FAVORITE_USER_ID + " INTEGER NOT NULL, "
+                + COL_FAVORITE_LOCATION_ID + " INTEGER NOT NULL, "
+                + COL_FAVORITE_DATE_ADDED + " INTEGER DEFAULT (strftime('%s', 'now')), "
+                + COL_FAVORITE_PERSONAL_NOTES + " TEXT, "
+                + "UNIQUE(" + COL_FAVORITE_USER_ID + ", " + COL_FAVORITE_LOCATION_ID + "), "
+                + "FOREIGN KEY (" + COL_FAVORITE_USER_ID + ") REFERENCES "
+                + TABLE_USERS + "(" + COL_USER_ID + ") ON DELETE CASCADE, "
+                + "FOREIGN KEY (" + COL_FAVORITE_LOCATION_ID + ") REFERENCES "
+                + TABLE_LOCATIONS + "(" + COL_LOCATION_ID + ") ON DELETE CASCADE"
                 + ")";
-        db.execSQL(createFavoritos);
+        db.execSQL(createFavorites);
 
-        String createPreferencias = "CREATE TABLE " + TABLE_PREFERENCIAS_USUARIO + " ("
-                + COL_PREFERENCIA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_PREFERENCIA_USUARIO_ID + " INTEGER NOT NULL, "
-                + COL_PREFERENCIA_CATEGORIA_ID + " INTEGER NOT NULL, "
-                + COL_PREFERENCIA_NIVEL_INTERES + " INTEGER CHECK(nivel_interes >= 1 AND nivel_interes <= 5), "
-                + "UNIQUE(" + COL_PREFERENCIA_USUARIO_ID + ", " + COL_PREFERENCIA_CATEGORIA_ID + "), "
-                + "FOREIGN KEY (" + COL_PREFERENCIA_USUARIO_ID + ") REFERENCES "
-                + TABLE_USUARIOS + "(" + COL_USUARIO_ID + ") ON DELETE CASCADE, "
-                + "FOREIGN KEY (" + COL_PREFERENCIA_CATEGORIA_ID + ") REFERENCES "
-                + TABLE_CATEGORIAS + "(" + COL_CATEGORIA_ID + ") ON DELETE CASCADE"
+        String createPreferences = "CREATE TABLE " + TABLE_USER_PREFERENCES + " ("
+                + COL_PREFERENCE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_PREFERENCE_USER_ID + " INTEGER NOT NULL, "
+                + COL_PREFERENCE_CATEGORY_ID + " INTEGER NOT NULL, "
+                + COL_PREFERENCE_INTEREST_LEVEL + " INTEGER CHECK(interest_level >= 1 AND interest_level <= 5), "
+                + "UNIQUE(" + COL_PREFERENCE_USER_ID + ", " + COL_PREFERENCE_CATEGORY_ID + "), "
+                + "FOREIGN KEY (" + COL_PREFERENCE_USER_ID + ") REFERENCES "
+                + TABLE_USERS + "(" + COL_USER_ID + ") ON DELETE CASCADE, "
+                + "FOREIGN KEY (" + COL_PREFERENCE_CATEGORY_ID + ") REFERENCES "
+                + TABLE_CATEGORIES + "(" + COL_CATEGORY_ID + ") ON DELETE CASCADE"
                 + ")";
-        db.execSQL(createPreferencias);
+        db.execSQL(createPreferences);
 
-        db.execSQL("CREATE INDEX idx_localizaciones_categoria ON " + TABLE_LOCALIZACIONES
-                + "(" + COL_LOCALIZACION_CATEGORIA_ID + ")");
-        db.execSQL("CREATE INDEX idx_localizaciones_ciudad ON " + TABLE_LOCALIZACIONES
-                + "(" + COL_LOCALIZACION_CIUDAD + ")");
-        db.execSQL("CREATE INDEX idx_reviews_localizacion ON " + TABLE_REVIEWS
-                + "(" + COL_REVIEW_LOCALIZACION_ID + ")");
-        db.execSQL("CREATE INDEX idx_reviews_usuario ON " + TABLE_REVIEWS
-                + "(" + COL_REVIEW_USUARIO_ID + ")");
-        db.execSQL("CREATE INDEX idx_favoritos_usuario ON " + TABLE_FAVORITOS
-                + "(" + COL_FAVORITO_USUARIO_ID + ")");
+        db.execSQL("CREATE INDEX idx_locations_category ON " + TABLE_LOCATIONS
+                + "(" + COL_LOCATION_CATEGORY_ID + ")");
+        db.execSQL("CREATE INDEX idx_locations_city ON " + TABLE_LOCATIONS
+                + "(" + COL_LOCATION_CITY + ")");
+        db.execSQL("CREATE INDEX idx_reviews_location ON " + TABLE_REVIEWS
+                + "(" + COL_REVIEW_LOCATION_ID + ")");
+        db.execSQL("CREATE INDEX idx_reviews_user ON " + TABLE_REVIEWS
+                + "(" + COL_REVIEW_USER_ID + ")");
+        db.execSQL("CREATE INDEX idx_favorites_user ON " + TABLE_FAVORITES
+                + "(" + COL_FAVORITE_USER_ID + ")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // En caso de actualización, borrar todas las tablas y recrear
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PREFERENCIAS_USUARIO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITOS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_PREFERENCES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REVIEWS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGENES_LOCALIZACIONES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCALIZACIONES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIAS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION_IMAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
 
@@ -233,62 +233,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // MÉTODOS CRUD PARA USUARIOS
 
     // Insertar un nuevo usuario
-    public long insertarUsuario(String nombre, String apellido, String email, String passwordHash,
-                                String paisOrigen, String fotoPerfil) {
+    public long insertUser(String firstName, String lastName, String email, String passwordHash,
+                          String countryOfOrigin, String profilePicture) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_USUARIO_NOMBRE, nombre);
-        values.put(COL_USUARIO_APELLIDO, apellido);
-        values.put(COL_USUARIO_EMAIL, email);
-        values.put(COL_USUARIO_PASSWORD_HASH, passwordHash);
-        values.put(COL_USUARIO_PAIS_ORIGEN, paisOrigen);
-        values.put(COL_USUARIO_FOTO_PERFIL, fotoPerfil);
+        values.put(COL_USER_FIRST_NAME, firstName);
+        values.put(COL_USER_LAST_NAME, lastName);
+        values.put(COL_USER_EMAIL, email);
+        values.put(COL_USER_PASSWORD_HASH, passwordHash);
+        values.put(COL_USER_COUNTRY_OF_ORIGIN, countryOfOrigin);
+        values.put(COL_USER_PROFILE_PICTURE, profilePicture);
 
-        long id = db.insert(TABLE_USUARIOS, null, values);
+        long id = db.insert(TABLE_USERS, null, values);
         db.close();
         return id;
     }
 
     // Buscar usuario por email
-    public Cursor buscarUsuarioPorEmail(String email) {
+    public Cursor findUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_USUARIOS + " WHERE "
-                + COL_USUARIO_EMAIL + " = ?";
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
+                + COL_USER_EMAIL + " = ?";
         return db.rawQuery(query, new String[]{email});
     }
 
     // Buscar usuario por ID
-    public Cursor buscarUsuarioPorId(long usuarioId) {
+    public Cursor findUserById(long userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_USUARIOS + " WHERE "
-                + COL_USUARIO_ID + " = ?";
-        return db.rawQuery(query, new String[]{String.valueOf(usuarioId)});
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
+                + COL_USER_ID + " = ?";
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
 
     // Actualizar datos de usuario
-    public int actualizarUsuario(long usuarioId, String nombre, String apellido,
-                                  String paisOrigen, String fotoPerfil) {
+    public int updateUser(long userId, String firstName, String lastName,
+                         String countryOfOrigin, String profilePicture) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_USUARIO_NOMBRE, nombre);
-        values.put(COL_USUARIO_APELLIDO, apellido);
-        values.put(COL_USUARIO_PAIS_ORIGEN, paisOrigen);
-        values.put(COL_USUARIO_FOTO_PERFIL, fotoPerfil);
+        values.put(COL_USER_FIRST_NAME, firstName);
+        values.put(COL_USER_LAST_NAME, lastName);
+        values.put(COL_USER_COUNTRY_OF_ORIGIN, countryOfOrigin);
+        values.put(COL_USER_PROFILE_PICTURE, profilePicture);
 
-        int rowsAffected = db.update(TABLE_USUARIOS, values,
-                COL_USUARIO_ID + " = ?", new String[]{String.valueOf(usuarioId)});
+        int rowsAffected = db.update(TABLE_USERS, values,
+                COL_USER_ID + " = ?", new String[]{String.valueOf(userId)});
         db.close();
         return rowsAffected;
     }
 
     // Eliminar usuario (soft delete - marcar como inactivo)
-    public int desactivarUsuario(long usuarioId) {
+    public int deactivateUser(long userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_USUARIO_ACTIVO, 0);
+        values.put(COL_USER_ACTIVE, 0);
 
-        int rowsAffected = db.update(TABLE_USUARIOS, values,
-                COL_USUARIO_ID + " = ?", new String[]{String.valueOf(usuarioId)});
+        int rowsAffected = db.update(TABLE_USERS, values,
+                COL_USER_ID + " = ?", new String[]{String.valueOf(userId)});
         db.close();
         return rowsAffected;
     }
@@ -296,127 +296,127 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // MÉTODOS CRUD PARA CATEGORIAS
 
     // Insertar una nueva categoría
-    public long insertarCategoria(String nombre, String descripcion, String icono, String color) {
+    public long insertCategory(String name, String description, String icon, String color) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_CATEGORIA_NOMBRE, nombre);
-        values.put(COL_CATEGORIA_DESCRIPCION, descripcion);
-        values.put(COL_CATEGORIA_ICONO, icono);
-        values.put(COL_CATEGORIA_COLOR, color);
+        values.put(COL_CATEGORY_NAME, name);
+        values.put(COL_CATEGORY_DESCRIPTION, description);
+        values.put(COL_CATEGORY_ICON, icon);
+        values.put(COL_CATEGORY_COLOR, color);
 
-        long id = db.insert(TABLE_CATEGORIAS, null, values);
+        long id = db.insert(TABLE_CATEGORIES, null, values);
         db.close();
         return id;
     }
 
     // Obtener todas las categorías
-    public Cursor obtenerTodasCategorias() {
+    public Cursor getAllCategories() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_CATEGORIAS + " ORDER BY " + COL_CATEGORIA_NOMBRE;
+        String query = "SELECT * FROM " + TABLE_CATEGORIES + " ORDER BY " + COL_CATEGORY_NAME;
         return db.rawQuery(query, null);
     }
 
     // Buscar categoría por ID
-    public Cursor buscarCategoriaPorId(long categoriaId) {
+    public Cursor findCategoryById(long categoryId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_CATEGORIAS + " WHERE "
-                + COL_CATEGORIA_ID + " = ?";
-        return db.rawQuery(query, new String[]{String.valueOf(categoriaId)});
+        String query = "SELECT * FROM " + TABLE_CATEGORIES + " WHERE "
+                + COL_CATEGORY_ID + " = ?";
+        return db.rawQuery(query, new String[]{String.valueOf(categoryId)});
     }
 
     // MÉTODOS CRUD PARA LOCALIZACIONES
 
     // Insertar una nueva localización
-    public long insertarLocalizacion(String nombre, String descripcion, double latitud, double longitud,
-                                      String direccion, String ciudad, Long categoriaId, double costoPromedio,
-                                      String horarioApertura, String horarioCierre, String telefono,
-                                      String sitioWeb, float popularidadScore) {
+    public long insertLocation(String name, String description, double latitude, double longitude,
+                              String address, String city, Long categoryId, double averageCost,
+                              String openingTime, String closingTime, String phone,
+                              String website, float popularityScore) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_LOCALIZACION_NOMBRE, nombre);
-        values.put(COL_LOCALIZACION_DESCRIPCION, descripcion);
-        values.put(COL_LOCALIZACION_LATITUD, latitud);
-        values.put(COL_LOCALIZACION_LONGITUD, longitud);
-        values.put(COL_LOCALIZACION_DIRECCION, direccion);
-        values.put(COL_LOCALIZACION_CIUDAD, ciudad);
-        if (categoriaId != null) {
-            values.put(COL_LOCALIZACION_CATEGORIA_ID, categoriaId);
+        values.put(COL_LOCATION_NAME, name);
+        values.put(COL_LOCATION_DESCRIPTION, description);
+        values.put(COL_LOCATION_LATITUDE, latitude);
+        values.put(COL_LOCATION_LONGITUDE, longitude);
+        values.put(COL_LOCATION_ADDRESS, address);
+        values.put(COL_LOCATION_CITY, city);
+        if (categoryId != null) {
+            values.put(COL_LOCATION_CATEGORY_ID, categoryId);
         }
-        values.put(COL_LOCALIZACION_COSTO_PROMEDIO, costoPromedio);
-        values.put(COL_LOCALIZACION_HORARIO_APERTURA, horarioApertura);
-        values.put(COL_LOCALIZACION_HORARIO_CIERRE, horarioCierre);
-        values.put(COL_LOCALIZACION_TELEFONO, telefono);
-        values.put(COL_LOCALIZACION_SITIO_WEB, sitioWeb);
-        values.put(COL_LOCALIZACION_POPULARIDAD_SCORE, popularidadScore);
+        values.put(COL_LOCATION_AVERAGE_COST, averageCost);
+        values.put(COL_LOCATION_OPENING_TIME, openingTime);
+        values.put(COL_LOCATION_CLOSING_TIME, closingTime);
+        values.put(COL_LOCATION_PHONE, phone);
+        values.put(COL_LOCATION_WEBSITE, website);
+        values.put(COL_LOCATION_POPULARITY_SCORE, popularityScore);
 
-        long id = db.insert(TABLE_LOCALIZACIONES, null, values);
+        long id = db.insert(TABLE_LOCATIONS, null, values);
         db.close();
         return id;
     }
 
     // Obtener todas las localizaciones activas de una ciudad
-    public Cursor obtenerLocalizacionesPorCiudad(String ciudad) {
+    public Cursor getLocationsByCity(String city) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT l.*, c." + COL_CATEGORIA_NOMBRE + " as categoria_nombre FROM "
-                + TABLE_LOCALIZACIONES + " l LEFT JOIN " + TABLE_CATEGORIAS + " c ON l."
-                + COL_LOCALIZACION_CATEGORIA_ID + " = c." + COL_CATEGORIA_ID + " WHERE l."
-                + COL_LOCALIZACION_CIUDAD + " = ? AND l." + COL_LOCALIZACION_ACTIVO + " = 1 "
-                + "ORDER BY l." + COL_LOCALIZACION_POPULARIDAD_SCORE + " DESC";
-        return db.rawQuery(query, new String[]{ciudad});
+        String query = "SELECT l.*, c." + COL_CATEGORY_NAME + " as category_name FROM "
+                + TABLE_LOCATIONS + " l LEFT JOIN " + TABLE_CATEGORIES + " c ON l."
+                + COL_LOCATION_CATEGORY_ID + " = c." + COL_CATEGORY_ID + " WHERE l."
+                + COL_LOCATION_CITY + " = ? AND l." + COL_LOCATION_ACTIVE + " = 1 "
+                + "ORDER BY l." + COL_LOCATION_POPULARITY_SCORE + " DESC";
+        return db.rawQuery(query, new String[]{city});
     }
 
     // Obtener localizaciones por categoría
-    public Cursor obtenerLocalizacionesPorCategoria(long categoriaId) {
+    public Cursor getLocationsByCategory(long categoryId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_LOCALIZACIONES + " WHERE "
-                + COL_LOCALIZACION_CATEGORIA_ID + " = ? AND " + COL_LOCALIZACION_ACTIVO + " = 1 "
-                + "ORDER BY " + COL_LOCALIZACION_POPULARIDAD_SCORE + " DESC";
-        return db.rawQuery(query, new String[]{String.valueOf(categoriaId)});
+        String query = "SELECT * FROM " + TABLE_LOCATIONS + " WHERE "
+                + COL_LOCATION_CATEGORY_ID + " = ? AND " + COL_LOCATION_ACTIVE + " = 1 "
+                + "ORDER BY " + COL_LOCATION_POPULARITY_SCORE + " DESC";
+        return db.rawQuery(query, new String[]{String.valueOf(categoryId)});
     }
 
     // Buscar localización por ID
-    public Cursor buscarLocalizacionPorId(long localizacionId) {
+    public Cursor findLocationById(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT l.*, c." + COL_CATEGORIA_NOMBRE + " as categoria_nombre FROM "
-                + TABLE_LOCALIZACIONES + " l LEFT JOIN " + TABLE_CATEGORIAS + " c ON l."
-                + COL_LOCALIZACION_CATEGORIA_ID + " = c." + COL_CATEGORIA_ID + " WHERE l."
-                + COL_LOCALIZACION_ID + " = ?";
-        return db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+        String query = "SELECT l.*, c." + COL_CATEGORY_NAME + " as category_name FROM "
+                + TABLE_LOCATIONS + " l LEFT JOIN " + TABLE_CATEGORIES + " c ON l."
+                + COL_LOCATION_CATEGORY_ID + " = c." + COL_CATEGORY_ID + " WHERE l."
+                + COL_LOCATION_ID + " = ?";
+        return db.rawQuery(query, new String[]{String.valueOf(locationId)});
     }
 
     // Actualizar localización
-    public int actualizarLocalizacion(long localizacionId, String nombre, String descripcion,
-                                       double latitud, double longitud, String direccion,
-                                       Long categoriaId, double costoPromedio, String telefono,
-                                       String sitioWeb) {
+    public int updateLocation(long locationId, String name, String description,
+                             double latitude, double longitude, String address,
+                             Long categoryId, double averageCost, String phone,
+                             String website) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_LOCALIZACION_NOMBRE, nombre);
-        values.put(COL_LOCALIZACION_DESCRIPCION, descripcion);
-        values.put(COL_LOCALIZACION_LATITUD, latitud);
-        values.put(COL_LOCALIZACION_LONGITUD, longitud);
-        values.put(COL_LOCALIZACION_DIRECCION, direccion);
-        if (categoriaId != null) {
-            values.put(COL_LOCALIZACION_CATEGORIA_ID, categoriaId);
+        values.put(COL_LOCATION_NAME, name);
+        values.put(COL_LOCATION_DESCRIPTION, description);
+        values.put(COL_LOCATION_LATITUDE, latitude);
+        values.put(COL_LOCATION_LONGITUDE, longitude);
+        values.put(COL_LOCATION_ADDRESS, address);
+        if (categoryId != null) {
+            values.put(COL_LOCATION_CATEGORY_ID, categoryId);
         }
-        values.put(COL_LOCALIZACION_COSTO_PROMEDIO, costoPromedio);
-        values.put(COL_LOCALIZACION_TELEFONO, telefono);
-        values.put(COL_LOCALIZACION_SITIO_WEB, sitioWeb);
+        values.put(COL_LOCATION_AVERAGE_COST, averageCost);
+        values.put(COL_LOCATION_PHONE, phone);
+        values.put(COL_LOCATION_WEBSITE, website);
 
-        int rowsAffected = db.update(TABLE_LOCALIZACIONES, values,
-                COL_LOCALIZACION_ID + " = ?", new String[]{String.valueOf(localizacionId)});
+        int rowsAffected = db.update(TABLE_LOCATIONS, values,
+                COL_LOCATION_ID + " = ?", new String[]{String.valueOf(locationId)});
         db.close();
         return rowsAffected;
     }
 
     // Desactivar localización (soft delete)
-    public int desactivarLocalizacion(long localizacionId) {
+    public int deactivateLocation(long locationId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_LOCALIZACION_ACTIVO, 0);
+        values.put(COL_LOCATION_ACTIVE, 0);
 
-        int rowsAffected = db.update(TABLE_LOCALIZACIONES, values,
-                COL_LOCALIZACION_ID + " = ?", new String[]{String.valueOf(localizacionId)});
+        int rowsAffected = db.update(TABLE_LOCATIONS, values,
+                COL_LOCATION_ID + " = ?", new String[]{String.valueOf(locationId)});
         db.close();
         return rowsAffected;
     }
@@ -424,48 +424,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // MÉTODOS CRUD PARA IMAGENES_LOCALIZACIONES
 
     // Insertar imagen de localización
-    public long insertarImagenLocalizacion(long localizacionId, String urlImagen,
-                                            boolean esPrincipal, int orden) {
+    public long insertLocationImage(long locationId, String imageUrl,
+                                   boolean isPrimary, int order) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_IMAGEN_LOCALIZACION_ID, localizacionId);
-        values.put(COL_IMAGEN_URL, urlImagen);
-        values.put(COL_IMAGEN_ES_PRINCIPAL, esPrincipal ? 1 : 0);
-        values.put(COL_IMAGEN_ORDEN, orden);
+        values.put(COL_IMAGE_LOCATION_ID, locationId);
+        values.put(COL_IMAGE_URL, imageUrl);
+        values.put(COL_IMAGE_IS_PRIMARY, isPrimary ? 1 : 0);
+        values.put(COL_IMAGE_ORDER, order);
 
-        long id = db.insert(TABLE_IMAGENES_LOCALIZACIONES, null, values);
+        long id = db.insert(TABLE_LOCATION_IMAGES, null, values);
         db.close();
         return id;
     }
 
     // Obtener todas las imágenes de una localización
-    public Cursor obtenerImagenesPorLocalizacion(long localizacionId) {
+    public Cursor getImagesByLocation(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_IMAGENES_LOCALIZACIONES + " WHERE "
-                + COL_IMAGEN_LOCALIZACION_ID + " = ? ORDER BY " + COL_IMAGEN_ORDEN;
-        return db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+        String query = "SELECT * FROM " + TABLE_LOCATION_IMAGES + " WHERE "
+                + COL_IMAGE_LOCATION_ID + " = ? ORDER BY " + COL_IMAGE_ORDER;
+        return db.rawQuery(query, new String[]{String.valueOf(locationId)});
     }
 
     // Obtener imagen principal de una localización
-    public Cursor obtenerImagenPrincipal(long localizacionId) {
+    public Cursor getPrimaryImage(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_IMAGENES_LOCALIZACIONES + " WHERE "
-                + COL_IMAGEN_LOCALIZACION_ID + " = ? AND " + COL_IMAGEN_ES_PRINCIPAL + " = 1 LIMIT 1";
-        return db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+        String query = "SELECT * FROM " + TABLE_LOCATION_IMAGES + " WHERE "
+                + COL_IMAGE_LOCATION_ID + " = ? AND " + COL_IMAGE_IS_PRIMARY + " = 1 LIMIT 1";
+        return db.rawQuery(query, new String[]{String.valueOf(locationId)});
     }
 
     // MÉTODOS CRUD PARA REVIEWS
 
     // Insertar un review
-    public long insertarReview(long usuarioId, long localizacionId, int calificacion,
-                               String comentario, long fechaVisita) {
+    public long insertReview(long userId, long locationId, int rating,
+                            String comment, long visitDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_REVIEW_USUARIO_ID, usuarioId);
-        values.put(COL_REVIEW_LOCALIZACION_ID, localizacionId);
-        values.put(COL_REVIEW_CALIFICACION, calificacion);
-        values.put(COL_REVIEW_COMENTARIO, comentario);
-        values.put(COL_REVIEW_FECHA_VISITA, fechaVisita);
+        values.put(COL_REVIEW_USER_ID, userId);
+        values.put(COL_REVIEW_LOCATION_ID, locationId);
+        values.put(COL_REVIEW_RATING, rating);
+        values.put(COL_REVIEW_COMMENT, comment);
+        values.put(COL_REVIEW_VISIT_DATE, visitDate);
 
         long id = db.insert(TABLE_REVIEWS, null, values);
         db.close();
@@ -473,34 +473,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Obtener reviews de una localización
-    public Cursor obtenerReviewsPorLocalizacion(long localizacionId) {
+    public Cursor getReviewsByLocation(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT r.*, u." + COL_USUARIO_NOMBRE + ", u." + COL_USUARIO_APELLIDO
-                + ", u." + COL_USUARIO_FOTO_PERFIL + " FROM " + TABLE_REVIEWS + " r "
-                + "INNER JOIN " + TABLE_USUARIOS + " u ON r." + COL_REVIEW_USUARIO_ID
-                + " = u." + COL_USUARIO_ID + " WHERE r." + COL_REVIEW_LOCALIZACION_ID + " = ? "
-                + "ORDER BY r." + COL_REVIEW_FECHA_REVIEW + " DESC";
-        return db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+        String query = "SELECT r.*, u." + COL_USER_FIRST_NAME + ", u." + COL_USER_LAST_NAME
+                + ", u." + COL_USER_PROFILE_PICTURE + " FROM " + TABLE_REVIEWS + " r "
+                + "INNER JOIN " + TABLE_USERS + " u ON r." + COL_REVIEW_USER_ID
+                + " = u." + COL_USER_ID + " WHERE r." + COL_REVIEW_LOCATION_ID + " = ? "
+                + "ORDER BY r." + COL_REVIEW_DATE + " DESC";
+        return db.rawQuery(query, new String[]{String.valueOf(locationId)});
     }
 
     // Obtener calificación promedio de una localización
-    public float obtenerCalificacionPromedio(long localizacionId) {
+    public float getAverageRating(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT AVG(" + COL_REVIEW_CALIFICACION + ") as promedio FROM "
-                + TABLE_REVIEWS + " WHERE " + COL_REVIEW_LOCALIZACION_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+        String query = "SELECT AVG(" + COL_REVIEW_RATING + ") as average FROM "
+                + TABLE_REVIEWS + " WHERE " + COL_REVIEW_LOCATION_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(locationId)});
 
-        float promedio = 0;
+        float average = 0;
         if (cursor.moveToFirst()) {
-            promedio = cursor.getFloat(0);
+            average = cursor.getFloat(0);
         }
         cursor.close();
         db.close();
-        return promedio;
+        return average;
     }
 
     // Actualizar likes de un review
-    public int actualizarLikesReview(long reviewId, int likes) {
+    public int updateReviewLikes(long reviewId, int likes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_REVIEW_LIKES, likes);
@@ -512,7 +512,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Eliminar review
-    public int eliminarReview(long reviewId) {
+    public int deleteReview(long reviewId) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(TABLE_REVIEWS,
                 COL_REVIEW_ID + " = ?", new String[]{String.valueOf(reviewId)});
@@ -523,16 +523,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // MÉTODOS CRUD PARA FAVORITOS
 
     // Agregar localización a favoritos
-    public long agregarFavorito(long usuarioId, long localizacionId, String notasPersonales) {
+    public long addFavorite(long userId, long locationId, String personalNotes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_FAVORITO_USUARIO_ID, usuarioId);
-        values.put(COL_FAVORITO_LOCALIZACION_ID, localizacionId);
-        values.put(COL_FAVORITO_NOTAS_PERSONALES, notasPersonales);
+        values.put(COL_FAVORITE_USER_ID, userId);
+        values.put(COL_FAVORITE_LOCATION_ID, locationId);
+        values.put(COL_FAVORITE_PERSONAL_NOTES, personalNotes);
 
         long id = -1;
         try {
-            id = db.insertOrThrow(TABLE_FAVORITOS, null, values);
+            id = db.insertOrThrow(TABLE_FAVORITES, null, values);
         } catch (SQLException e) {
             // Ya existe en favoritos
         }
@@ -541,35 +541,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Obtener favoritos de un usuario
-    public Cursor obtenerFavoritosPorUsuario(long usuarioId) {
+    public Cursor getFavoritesByUser(long userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT f.*, l.* FROM " + TABLE_FAVORITOS + " f "
-                + "INNER JOIN " + TABLE_LOCALIZACIONES + " l ON f." + COL_FAVORITO_LOCALIZACION_ID
-                + " = l." + COL_LOCALIZACION_ID + " WHERE f." + COL_FAVORITO_USUARIO_ID + " = ? "
-                + "ORDER BY f." + COL_FAVORITO_FECHA_AGREGADO + " DESC";
-        return db.rawQuery(query, new String[]{String.valueOf(usuarioId)});
+        String query = "SELECT f.*, l.*, c." + COL_CATEGORY_NAME + " as category_name FROM "
+                + TABLE_FAVORITES + " f "
+                + "INNER JOIN " + TABLE_LOCATIONS + " l ON f." + COL_FAVORITE_LOCATION_ID
+                + " = l." + COL_LOCATION_ID + " "
+                + "LEFT JOIN " + TABLE_CATEGORIES + " c ON l." + COL_LOCATION_CATEGORY_ID
+                + " = c." + COL_CATEGORY_ID + " "
+                + "WHERE f." + COL_FAVORITE_USER_ID + " = ? "
+                + "ORDER BY f." + COL_FAVORITE_DATE_ADDED + " DESC";
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
 
     // Verificar si una localización está en favoritos
-    public boolean esFavorito(long usuarioId, long localizacionId) {
+    public boolean isFavorite(long userId, long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_FAVORITOS + " WHERE "
-                + COL_FAVORITO_USUARIO_ID + " = ? AND " + COL_FAVORITO_LOCALIZACION_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(usuarioId),
-                String.valueOf(localizacionId)});
+        String query = "SELECT * FROM " + TABLE_FAVORITES + " WHERE "
+                + COL_FAVORITE_USER_ID + " = ? AND " + COL_FAVORITE_LOCATION_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId),
+                String.valueOf(locationId)});
 
-        boolean existe = cursor.getCount() > 0;
+        boolean exists = cursor.getCount() > 0;
         cursor.close();
         db.close();
-        return existe;
+        return exists;
     }
 
     // Eliminar de favoritos
-    public int eliminarFavorito(long usuarioId, long localizacionId) {
+    public int removeFavorite(long userId, long locationId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_FAVORITOS,
-                COL_FAVORITO_USUARIO_ID + " = ? AND " + COL_FAVORITO_LOCALIZACION_ID + " = ?",
-                new String[]{String.valueOf(usuarioId), String.valueOf(localizacionId)});
+        int rowsAffected = db.delete(TABLE_FAVORITES,
+                COL_FAVORITE_USER_ID + " = ? AND " + COL_FAVORITE_LOCATION_ID + " = ?",
+                new String[]{String.valueOf(userId), String.valueOf(locationId)});
         db.close();
         return rowsAffected;
     }
@@ -579,43 +583,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Establecer preferencia de usuario por categoría
      */
-    public long establecerPreferencia(long usuarioId, long categoriaId, int nivelInteres) {
+    public long setPreference(long userId, long categoryId, int interestLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_PREFERENCIA_USUARIO_ID, usuarioId);
-        values.put(COL_PREFERENCIA_CATEGORIA_ID, categoriaId);
-        values.put(COL_PREFERENCIA_NIVEL_INTERES, nivelInteres);
+        values.put(COL_PREFERENCE_USER_ID, userId);
+        values.put(COL_PREFERENCE_CATEGORY_ID, categoryId);
+        values.put(COL_PREFERENCE_INTEREST_LEVEL, interestLevel);
 
         long id = -1;
         try {
-            id = db.insertOrThrow(TABLE_PREFERENCIAS_USUARIO, null, values);
+            id = db.insertOrThrow(TABLE_USER_PREFERENCES, null, values);
         } catch (SQLException e) {
             // Ya existe, actualizar
-            id = db.update(TABLE_PREFERENCIAS_USUARIO, values,
-                    COL_PREFERENCIA_USUARIO_ID + " = ? AND " + COL_PREFERENCIA_CATEGORIA_ID + " = ?",
-                    new String[]{String.valueOf(usuarioId), String.valueOf(categoriaId)});
+            id = db.update(TABLE_USER_PREFERENCES, values,
+                    COL_PREFERENCE_USER_ID + " = ? AND " + COL_PREFERENCE_CATEGORY_ID + " = ?",
+                    new String[]{String.valueOf(userId), String.valueOf(categoryId)});
         }
         db.close();
         return id;
     }
 
     // Obtener preferencias de un usuario
-    public Cursor obtenerPreferenciasPorUsuario(long usuarioId) {
+    public Cursor getPreferencesByUser(long userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT p.*, c." + COL_CATEGORIA_NOMBRE + ", c." + COL_CATEGORIA_ICONO
-                + ", c." + COL_CATEGORIA_COLOR + " FROM " + TABLE_PREFERENCIAS_USUARIO + " p "
-                + "INNER JOIN " + TABLE_CATEGORIAS + " c ON p." + COL_PREFERENCIA_CATEGORIA_ID
-                + " = c." + COL_CATEGORIA_ID + " WHERE p." + COL_PREFERENCIA_USUARIO_ID + " = ? "
-                + "ORDER BY p." + COL_PREFERENCIA_NIVEL_INTERES + " DESC";
-        return db.rawQuery(query, new String[]{String.valueOf(usuarioId)});
+        String query = "SELECT p.*, c." + COL_CATEGORY_NAME + ", c." + COL_CATEGORY_ICON
+                + ", c." + COL_CATEGORY_COLOR + " FROM " + TABLE_USER_PREFERENCES + " p "
+                + "INNER JOIN " + TABLE_CATEGORIES + " c ON p." + COL_PREFERENCE_CATEGORY_ID
+                + " = c." + COL_CATEGORY_ID + " WHERE p." + COL_PREFERENCE_USER_ID + " = ? "
+                + "ORDER BY p." + COL_PREFERENCE_INTEREST_LEVEL + " DESC";
+        return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
 
     // Eliminar preferencia
-    public int eliminarPreferencia(long usuarioId, long categoriaId) {
+    public int removePreference(long userId, long categoryId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsAffected = db.delete(TABLE_PREFERENCIAS_USUARIO,
-                COL_PREFERENCIA_USUARIO_ID + " = ? AND " + COL_PREFERENCIA_CATEGORIA_ID + " = ?",
-                new String[]{String.valueOf(usuarioId), String.valueOf(categoriaId)});
+        int rowsAffected = db.delete(TABLE_USER_PREFERENCES,
+                COL_PREFERENCE_USER_ID + " = ? AND " + COL_PREFERENCE_CATEGORY_ID + " = ?",
+                new String[]{String.valueOf(userId), String.valueOf(categoryId)});
         db.close();
         return rowsAffected;
     }
@@ -623,11 +627,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // ==================== MÉTODOS AUXILIARES ====================
 
     // Obtener número total de reviews de una localización
-    public int obtenerNumeroReviews(long localizacionId) {
+    public int getReviewCount(long locationId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + TABLE_REVIEWS + " WHERE "
-                + COL_REVIEW_LOCALIZACION_ID + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(localizacionId)});
+                + COL_REVIEW_LOCATION_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(locationId)});
 
         int count = 0;
         if (cursor.moveToFirst()) {
@@ -639,10 +643,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Buscar localizaciones por nombre
-    public Cursor buscarLocalizacionesPorNombre(String termino) {
+    public Cursor searchLocationsByName(String searchTerm) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_LOCALIZACIONES + " WHERE "
-                + COL_LOCALIZACION_NOMBRE + " LIKE ? AND " + COL_LOCALIZACION_ACTIVO + " = 1";
-        return db.rawQuery(query, new String[]{"%" + termino + "%"});
+        String query = "SELECT * FROM " + TABLE_LOCATIONS + " WHERE "
+                + COL_LOCATION_NAME + " LIKE ? AND " + COL_LOCATION_ACTIVE + " = 1";
+        return db.rawQuery(query, new String[]{"%" + searchTerm + "%"});
     }
 }
