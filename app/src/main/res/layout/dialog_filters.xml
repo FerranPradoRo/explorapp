@@ -15,85 +15,87 @@
         android:textColor="@color/dark_gray"
         android:layout_marginBottom="16dp" />
 
-    <!-- Categorías -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categorías"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/dark_gray"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
-
-    <ScrollView
+    <!-- Sección de Categorías Colapsable -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/light_cream"
+        app:cardCornerRadius="8dp"
         android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="12dp">
 
-            <CheckBox
-                android:id="@+id/filter_restaurants"
+            <!-- Header colapsable -->
+            <LinearLayout
+                android:id="@+id/categories_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Restaurantes"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:padding="8dp">
 
-            <CheckBox
-                android:id="@+id/filter_cafes"
+                <ImageView
+                    android:id="@+id/categories_expand_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/arrow_down_float"
+                    app:tint="@color/dark_gray"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Categorías"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_gray" />
+
+                <TextView
+                    android:id="@+id/selected_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 seleccionadas"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray" />
+
+            </LinearLayout>
+
+            <!-- Contenedor de categorías (colapsable) -->
+            <LinearLayout
+                android:id="@+id/categories_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cafeterías"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
 
-            <CheckBox
-                android:id="@+id/filter_plazas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Plazas"
-                android:textSize="16sp" />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="200dp">
 
-            <CheckBox
-                android:id="@+id/filter_museums"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Museos"
-                android:textSize="16sp" />
+                    <LinearLayout
+                        android:id="@+id/categories_checkboxes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
-            <CheckBox
-                android:id="@+id/filter_theaters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Teatros"
-                android:textSize="16sp" />
+                </ScrollView>
 
-            <CheckBox
-                android:id="@+id/filter_hotels"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hoteles"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/filter_bars"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bares"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/filter_parks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Parques"
-                android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Divider -->
     <View
@@ -101,105 +103,6 @@
         android:layout_height="1dp"
         android:background="@color/gray_border"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Precio -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rango de Precio"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/dark_gray"
-        android:layout_marginBottom="8dp" />
-
-    <RadioGroup
-        android:id="@+id/price_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-
-        <RadioButton
-            android:id="@+id/price_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Todos"
-            android:textSize="16sp"
-            android:checked="true" />
-
-        <RadioButton
-            android:id="@+id/price_low"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="$ - Económico"
-            android:textSize="16sp" />
-
-        <RadioButton
-            android:id="@+id/price_medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="$$ - Moderado"
-            android:textSize="16sp" />
-
-        <RadioButton
-            android:id="@+id/price_high"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="$$$ - Costoso"
-            android:textSize="16sp" />
-
-    </RadioGroup>
-
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_border"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Reseñas -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calificación Mínima"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/dark_gray"
-        android:layout_marginBottom="8dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <RatingBar
-            android:id="@+id/rating_filter"
-            style="?android:attr/ratingBarStyleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="0"
-            android:stepSize="0.5"
-            android:isIndicator="false" />
-
-        <TextView
-            android:id="@+id/rating_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="Todas"
-            android:textSize="16sp"
-            android:textColor="@color/dark_gray" />
-
-    </LinearLayout>
-
-    <!-- Divider -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_border"
         android:layout_marginBottom="16dp" />
 
     <!-- Botones -->

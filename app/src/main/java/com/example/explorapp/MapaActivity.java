@@ -1,23 +1,19 @@
 package com.example.explorapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.content.ContextCompat;
 
-import com.example.explorapp.models.Localizacion;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.example.explorapp.models.Location;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
@@ -31,46 +27,42 @@ import java.util.Map;
 
 public class MapaActivity extends AppCompatActivity {
 
+    private static final String PREFS_NAME = "ExplorappPrefs";
+    private static final String KEY_USER_ID = "userId";
+    private static final String KEY_IS_GUEST = "isGuest";
+
     private MapView mapView;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private BottomNavigationView bottomNavigationView;
-    private MaterialToolbar toolbar;
     private FloatingActionButton fabCurrentLocation;
     private com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton btnFilters;
     private Marker selectedMarker = null;
     private DatabaseHelper dbHelper;
 
     // Mapa para asociar marcadores con localizaciones
-    private Map<Marker, Localizacion> markerLocalizacionMap = new HashMap<>();
+    private Map<Marker, Location> markerLocationMap = new HashMap<>();
+
+    // Filtros activos
+    private List<Long> selectedCategoryIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+        Configuration.getInstance().load(this, getSharedPreferences("osmdroid", MODE_PRIVATE));
 
         setContentView(R.layout.activity_mapa);
 
         dbHelper = new DatabaseHelper(this);
         initializeViews();
         configurarMapa();
-        configurarDrawer();
         configurarBottomNavigation();
         cargarLocalizaciones();
-        setupBackPressHandler();
     }
 
     private void initializeViews() {
         mapView = findViewById(R.id.mapView);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigation_view);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        toolbar = findViewById(R.id.toolbar);
         fabCurrentLocation = findViewById(R.id.fab_current_location);
         btnFilters = findViewById(R.id.btn_filters);
-
-        setSupportActionBar(toolbar);
 
         // Listener para el botón de filtros
         btnFilters.setOnClickListener(v -> showFiltersDialog());
@@ -91,32 +83,6 @@ public class MapaActivity extends AppCompatActivity {
             mapView.getController().animateTo(puntoInicial);
             Toast.makeText(this, "Centrando en Guadalajara", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void configurarDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        );
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            handleDrawerItemClick(item.getItemId());
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        });
-    }
-
-    private void handleDrawerItemClick(int itemId) {
-        if (itemId == R.id.nav_languages) {
-            showLanguageDialog();
-        } else if (itemId == R.id.nav_help) {
-            Toast.makeText(this, "Ayuda", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.nav_settings) {
-            Toast.makeText(this, "Configuración", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void configurarBottomNavigation() {
@@ -145,40 +111,40 @@ public class MapaActivity extends AppCompatActivity {
     }
 
     private void cargarLocalizaciones() {
-        List<Localizacion> localizaciones = obtenerLocalizacionesDesdeDB();
+        List<Location> localizaciones = obtenerLocalizacionesDesdeDB();
 
         if (localizaciones.isEmpty()) {
             Toast.makeText(this, "No se encontraron lugares en Guadalajara", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        for (Localizacion localizacion : localizaciones) {
+        for (Location localizacion : localizaciones) {
             Marker marcador = new Marker(mapView);
-            GeoPoint position = new GeoPoint(localizacion.getLatitud(), localizacion.getLongitud());
+            GeoPoint position = new GeoPoint(localizacion.getLatitude(), localizacion.getLongitude());
             marcador.setPosition(position);
             marcador.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            marcador.setTitle(localizacion.getNombre());
-            marcador.setSnippet(localizacion.getCategoriaNombre());
+            marcador.setTitle(localizacion.getName());
+            marcador.setSnippet(localizacion.getCategoryName());
 
             // Ícono predeterminado (azul/gris)
-            marcador.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+            marcador.setIcon(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
 
             // Asociar el marcador con la localización
-            markerLocalizacionMap.put(marcador, localizacion);
+            markerLocationMap.put(marcador, localizacion);
 
             // Al hacer clic en el marcador, cambiar color y mostrar bottom sheet
             marcador.setOnMarkerClickListener((marker, mapView) -> {
                 // Restaurar el color del marcador anterior
                 if (selectedMarker != null && selectedMarker != marker) {
-                    selectedMarker.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+                    selectedMarker.setIcon(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
                 }
 
                 // Cambiar color del marcador actual (amarillo/destacado)
-                marker.setIcon(getResources().getDrawable(android.R.drawable.star_big_on));
+                marker.setIcon(ContextCompat.getDrawable(this, android.R.drawable.star_big_on));
                 selectedMarker = marker;
 
                 // Obtener la localización asociada al marcador
-                Localizacion loc = markerLocalizacionMap.get(marker);
+                Location loc = markerLocationMap.get(marker);
                 if (loc != null) {
                     showPlaceDetailsBottomSheet(loc);
                 }
@@ -191,24 +157,24 @@ public class MapaActivity extends AppCompatActivity {
         }
     }
 
-    private List<Localizacion> obtenerLocalizacionesDesdeDB() {
-        List<Localizacion> localizaciones = new ArrayList<>();
-        Cursor cursor = dbHelper.obtenerLocalizacionesPorCiudad("Guadalajara");
+    private List<Location> obtenerLocalizacionesDesdeDB() {
+        List<Location> localizaciones = new ArrayList<>();
+        Cursor cursor = dbHelper.getLocationsByCity("Guadalajara");
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                Localizacion loc = new Localizacion();
-                loc.setLocalizacionId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_ID)));
-                loc.setNombre(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_NOMBRE)));
-                loc.setDescripcion(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_DESCRIPCION)));
-                loc.setLatitud(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_LATITUD)));
-                loc.setLongitud(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_LONGITUD)));
-                loc.setPopularidadScore(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCALIZACION_POPULARIDAD_SCORE)));
+                Location loc = new Location();
+                loc.setLocationId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_ID)));
+                loc.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_NAME)));
+                loc.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_DESCRIPTION)));
+                loc.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_LATITUDE)));
+                loc.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_LONGITUDE)));
+                loc.setPopularityScore(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_POPULARITY_SCORE)));
 
                 // Obtener nombre de categoría si existe
-                int categoriaIndex = cursor.getColumnIndex("categoria_nombre");
+                int categoriaIndex = cursor.getColumnIndex("category_name");
                 if (categoriaIndex != -1) {
-                    loc.setCategoriaNombre(cursor.getString(categoriaIndex));
+                    loc.setCategoryName(cursor.getString(categoriaIndex));
                 }
 
                 localizaciones.add(loc);
@@ -219,66 +185,54 @@ public class MapaActivity extends AppCompatActivity {
         return localizaciones;
     }
 
-    private void showLanguageDialog() {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        android.view.LayoutInflater inflater = getLayoutInflater();
-        android.view.View dialogView = inflater.inflate(R.layout.dialog_language, null);
-        builder.setView(dialogView);
-
-        android.widget.RadioGroup radioGroup = dialogView.findViewById(R.id.language_radio_group);
-
-        builder.setPositiveButton("Aplicar", (dialog, which) -> {
-            int selectedId = radioGroup.getCheckedRadioButtonId();
-            String language = "Español";
-
-            if (selectedId == R.id.radio_spanish) {
-                language = "Español";
-            } else if (selectedId == R.id.radio_english) {
-                language = "English";
-            } else if (selectedId == R.id.radio_french) {
-                language = "Français";
-            } else if (selectedId == R.id.radio_german) {
-                language = "Deutsch";
-            }
-
-            Toast.makeText(this, "Idioma seleccionado: " + language, Toast.LENGTH_SHORT).show();
-            // En el futuro: cambiar el idioma de la app
-        });
-
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-
-        builder.create().show();
-    }
-
     private void showFiltersDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        android.view.LayoutInflater inflater = getLayoutInflater();
-        android.view.View dialogView = inflater.inflate(R.layout.dialog_filters, null);
+        android.view.View dialogView = getLayoutInflater().inflate(R.layout.dialog_filters, null);
         builder.setView(dialogView);
 
-        // Referencias a las vistas del diálogo
-        android.widget.CheckBox filterRestaurants = dialogView.findViewById(R.id.filter_restaurants);
-        android.widget.CheckBox filterCafes = dialogView.findViewById(R.id.filter_cafes);
-        android.widget.CheckBox filterPlazas = dialogView.findViewById(R.id.filter_plazas);
-        android.widget.CheckBox filterMuseums = dialogView.findViewById(R.id.filter_museums);
-        android.widget.CheckBox filterTheaters = dialogView.findViewById(R.id.filter_theaters);
-        android.widget.CheckBox filterHotels = dialogView.findViewById(R.id.filter_hotels);
-        android.widget.CheckBox filterBars = dialogView.findViewById(R.id.filter_bars);
-        android.widget.CheckBox filterParks = dialogView.findViewById(R.id.filter_parks);
-
-        android.widget.RadioGroup priceRadioGroup = dialogView.findViewById(R.id.price_radio_group);
-        android.widget.RatingBar ratingFilter = dialogView.findViewById(R.id.rating_filter);
-        android.widget.TextView ratingText = dialogView.findViewById(R.id.rating_text);
-
+        // Referencias a las vistas
+        android.widget.LinearLayout categoriesHeader = dialogView.findViewById(R.id.categories_header);
+        android.widget.ImageView expandIcon = dialogView.findViewById(R.id.categories_expand_icon);
+        android.widget.LinearLayout categoriesContainer = dialogView.findViewById(R.id.categories_container);
+        android.widget.LinearLayout categoriesCheckboxes = dialogView.findViewById(R.id.categories_checkboxes);
+        android.widget.TextView selectedCount = dialogView.findViewById(R.id.selected_count);
         com.google.android.material.button.MaterialButton btnApply = dialogView.findViewById(R.id.btn_apply_filters);
         com.google.android.material.button.MaterialButton btnClear = dialogView.findViewById(R.id.btn_clear_filters);
 
-        // Listener para el rating bar
-        ratingFilter.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            if (rating == 0) {
-                ratingText.setText("Todas");
+        // Cargar categorías desde la base de datos
+        List<android.util.Pair<Long, String>> categories = loadCategoriesFromDatabase();
+        Map<Long, android.widget.CheckBox> categoryCheckboxes = new HashMap<>();
+
+        // Crear checkboxes dinámicamente
+        for (android.util.Pair<Long, String> category : categories) {
+            android.widget.CheckBox checkBox = new android.widget.CheckBox(this);
+            checkBox.setText(category.second);
+            checkBox.setTextSize(16);
+            checkBox.setPadding(16, 12, 16, 12);
+
+            // Marcar si ya estaba seleccionado previamente
+            checkBox.setChecked(selectedCategoryIds.contains(category.first));
+
+            // Listener para actualizar el contador
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateSelectedCount(categoryCheckboxes, selectedCount));
+
+            categoryCheckboxes.put(category.first, checkBox);
+            categoriesCheckboxes.addView(checkBox);
+        }
+
+        // Actualizar el contador inicial
+        updateSelectedCount(categoryCheckboxes, selectedCount);
+
+        // Toggle colapsar/expandir categorías
+        final boolean[] isExpanded = {false};
+        categoriesHeader.setOnClickListener(v -> {
+            isExpanded[0] = !isExpanded[0];
+            if (isExpanded[0]) {
+                categoriesContainer.setVisibility(android.view.View.VISIBLE);
+                expandIcon.setRotation(180);
             } else {
-                ratingText.setText(rating + "+ estrellas");
+                categoriesContainer.setVisibility(android.view.View.GONE);
+                expandIcon.setRotation(0);
             }
         });
 
@@ -286,66 +240,137 @@ public class MapaActivity extends AppCompatActivity {
 
         // Botón Aplicar
         btnApply.setOnClickListener(v -> {
-            StringBuilder filterSummary = new StringBuilder("Filtros aplicados:\n");
-
-            // Categorías seleccionadas
-            java.util.ArrayList<String> categories = new java.util.ArrayList<>();
-            if (filterRestaurants.isChecked()) categories.add("Restaurantes");
-            if (filterCafes.isChecked()) categories.add("Cafeterías");
-            if (filterPlazas.isChecked()) categories.add("Plazas");
-            if (filterMuseums.isChecked()) categories.add("Museos");
-            if (filterTheaters.isChecked()) categories.add("Teatros");
-            if (filterHotels.isChecked()) categories.add("Hoteles");
-            if (filterBars.isChecked()) categories.add("Bares");
-            if (filterParks.isChecked()) categories.add("Parques");
-
-            if (!categories.isEmpty()) {
-                filterSummary.append("Categorías: ").append(String.join(", ", categories)).append("\n");
+            selectedCategoryIds.clear();
+            for (Map.Entry<Long, android.widget.CheckBox> entry : categoryCheckboxes.entrySet()) {
+                if (entry.getValue().isChecked()) {
+                    selectedCategoryIds.add(entry.getKey());
+                }
             }
 
-            // Precio seleccionado
-            int selectedPriceId = priceRadioGroup.getCheckedRadioButtonId();
-            if (selectedPriceId == R.id.price_low) {
-                filterSummary.append("Precio: Económico\n");
-            } else if (selectedPriceId == R.id.price_medium) {
-                filterSummary.append("Precio: Moderado\n");
-            } else if (selectedPriceId == R.id.price_high) {
-                filterSummary.append("Precio: Costoso\n");
-            }
-
-            // Rating seleccionado
-            float rating = ratingFilter.getRating();
-            if (rating > 0) {
-                filterSummary.append("Calificación mínima: ").append(rating).append(" estrellas");
-            }
-
-            Toast.makeText(this, filterSummary.toString(), Toast.LENGTH_LONG).show();
-            // En el futuro: aplicar filtros reales al mapa
+            // Aplicar filtros al mapa
+            applyFilters(selectedCategoryIds);
             dialog.dismiss();
         });
 
         // Botón Limpiar
         btnClear.setOnClickListener(v -> {
-            filterRestaurants.setChecked(false);
-            filterCafes.setChecked(false);
-            filterPlazas.setChecked(false);
-            filterMuseums.setChecked(false);
-            filterTheaters.setChecked(false);
-            filterHotels.setChecked(false);
-            filterBars.setChecked(false);
-            filterParks.setChecked(false);
-            priceRadioGroup.check(R.id.price_all);
-            ratingFilter.setRating(0);
-            Toast.makeText(this, "Filtros limpiados", Toast.LENGTH_SHORT).show();
+            for (android.widget.CheckBox checkBox : categoryCheckboxes.values()) {
+                checkBox.setChecked(false);
+            }
+            updateSelectedCount(categoryCheckboxes, selectedCount);
+
+            // Limpiar filtros y mostrar todos los lugares
+            selectedCategoryIds.clear();
+            applyFilters(new ArrayList<>());
         });
 
         dialog.show();
     }
 
-    /**
-     * Mostrar bottom sheet con detalles de la localización
-     */
-    private void showPlaceDetailsBottomSheet(Localizacion localizacion) {
+    private List<android.util.Pair<Long, String>> loadCategoriesFromDatabase() {
+        List<android.util.Pair<Long, String>> categories = new ArrayList<>();
+        Cursor cursor = dbHelper.getAllCategories();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_CATEGORY_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_CATEGORY_NAME));
+                categories.add(new android.util.Pair<>(id, name));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return categories;
+    }
+
+    private void updateSelectedCount(Map<Long, android.widget.CheckBox> checkboxes, android.widget.TextView countView) {
+        int count = 0;
+        for (android.widget.CheckBox checkBox : checkboxes.values()) {
+            if (checkBox.isChecked()) {
+                count++;
+            }
+        }
+        countView.setText(count + " seleccionada" + (count != 1 ? "s" : ""));
+    }
+
+    private void applyFilters(List<Long> selectedCategoryIds) {
+        // Limpiar marcadores actuales
+        mapView.getOverlays().clear();
+        markerLocationMap.clear();
+
+        // Obtener localizaciones filtradas
+        List<Location> filteredLocations;
+        if (selectedCategoryIds.isEmpty()) {
+            // Si no hay filtros, mostrar todos
+            filteredLocations = obtenerLocalizacionesDesdeDB();
+        } else {
+            // Filtrar por categorías seleccionadas
+            filteredLocations = new ArrayList<>();
+            for (Long categoryId : selectedCategoryIds) {
+                Cursor cursor = dbHelper.getLocationsByCategory(categoryId);
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        Location loc = new Location();
+                        loc.setLocationId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_ID)));
+                        loc.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_NAME)));
+                        loc.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_DESCRIPTION)));
+                        loc.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_LATITUDE)));
+                        loc.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_LONGITUDE)));
+                        loc.setPopularityScore(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LOCATION_POPULARITY_SCORE)));
+
+                        int categoryIndex = cursor.getColumnIndex("category_name");
+                        if (categoryIndex != -1) {
+                            loc.setCategoryName(cursor.getString(categoryIndex));
+                        }
+
+                        filteredLocations.add(loc);
+                    } while (cursor.moveToNext());
+                    cursor.close();
+                }
+            }
+        }
+
+        // Agregar marcadores filtrados
+        for (Location localizacion : filteredLocations) {
+            Marker marcador = new Marker(mapView);
+            GeoPoint position = new GeoPoint(localizacion.getLatitude(), localizacion.getLongitude());
+            marcador.setPosition(position);
+            marcador.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            marcador.setTitle(localizacion.getName());
+            marcador.setSnippet(localizacion.getCategoryName());
+            marcador.setIcon(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
+
+            markerLocationMap.put(marcador, localizacion);
+
+            marcador.setOnMarkerClickListener((marker, mapView) -> {
+                if (selectedMarker != null && selectedMarker != marker) {
+                    selectedMarker.setIcon(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
+                }
+                marker.setIcon(ContextCompat.getDrawable(this, android.R.drawable.star_big_on));
+                selectedMarker = marker;
+
+                Location loc = markerLocationMap.get(marker);
+                if (loc != null) {
+                    showPlaceDetailsBottomSheet(loc);
+                }
+
+                mapView.invalidate();
+                return true;
+            });
+
+            mapView.getOverlays().add(marcador);
+        }
+
+        mapView.invalidate();
+
+        String message = selectedCategoryIds.isEmpty()
+            ? "Mostrando todos los lugares"
+            : "Filtros aplicados: " + filteredLocations.size() + " lugares encontrados";
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    // Mostrar bottom sheet con detalles de la localización
+    private void showPlaceDetailsBottomSheet(Location localizacion) {
         com.google.android.material.bottomsheet.BottomSheetDialog bottomSheet =
             new com.google.android.material.bottomsheet.BottomSheetDialog(this);
         bottomSheet.setDismissWithAnimation(true);
@@ -370,11 +395,26 @@ public class MapaActivity extends AppCompatActivity {
         com.google.android.material.button.MaterialButton btnShare = sheetView.findViewById(R.id.btn_share);
 
         // Establecer datos desde la base de datos
-        placeName.setText(localizacion.getNombre());
-        placeCategory.setText(localizacion.getCategoriaNombre() != null ? localizacion.getCategoriaNombre() : "Sin categoría");
-        placeDescription.setText(localizacion.getDescripcion());
-        placeRating.setRating(localizacion.getPopularidadScore());
-        ratingValue.setText(String.format("%.1f", localizacion.getPopularidadScore()));
+        placeName.setText(localizacion.getName());
+        placeCategory.setText(localizacion.getCategoryName() != null ? localizacion.getCategoryName() : "Sin categoría");
+        placeDescription.setText(localizacion.getDescription());
+        placeRating.setRating(localizacion.getPopularityScore());
+        ratingValue.setText(String.format("%.1f", localizacion.getPopularityScore()));
+
+        // Obtener información de sesión
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isGuest = prefs.getBoolean(KEY_IS_GUEST, true);
+        long userId = prefs.getLong(KEY_USER_ID, -1);
+
+        // Verificar si ya está en favoritos
+        boolean isFavorite = !isGuest && dbHelper.isFavorite(userId, localizacion.getLocationId());
+
+        // Cambiar texto del botón según el estado
+        if (isFavorite) {
+            btnSave.setText("Eliminar de favoritos");
+        } else {
+            btnSave.setText("Añadir a favoritos");
+        }
 
         // Listeners de botones
         btnDirections.setOnClickListener(v -> {
@@ -382,14 +422,39 @@ public class MapaActivity extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> {
-            Toast.makeText(this, "Lugar guardado - Próximamente", Toast.LENGTH_SHORT).show();
+            if (isGuest) {
+                Toast.makeText(this, "Inicia sesión para guardar favoritos", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            boolean currentlyFavorite = dbHelper.isFavorite(userId, localizacion.getLocationId());
+
+            if (currentlyFavorite) {
+                // Eliminar de favoritos
+                int result = dbHelper.removeFavorite(userId, localizacion.getLocationId());
+                if (result > 0) {
+                    Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                    btnSave.setText("Añadir a favoritos");
+                } else {
+                    Toast.makeText(this, "Error al eliminar de favoritos", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Añadir a favoritos
+                long result = dbHelper.addFavorite(userId, localizacion.getLocationId(), null);
+                if (result != -1) {
+                    Toast.makeText(this, "Añadido a favoritos", Toast.LENGTH_SHORT).show();
+                    btnSave.setText("Eliminar de favoritos");
+                } else {
+                    Toast.makeText(this, "Error al añadir a favoritos", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
         btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            String shareBody = "¡Mira este lugar en EXPLORA! " + localizacion.getNombre();
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + localizacion.getNombre());
+            String shareBody = "¡Mira este lugar en EXPLORA! " + localizacion.getName();
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "EXPLORA - " + localizacion.getName());
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(shareIntent, "Compartir lugar"));
         });
@@ -477,7 +542,7 @@ public class MapaActivity extends AppCompatActivity {
         bottomSheet.setOnDismissListener(dialog -> {
             // Restaurar color del marcador cuando se cierra
             if (selectedMarker != null) {
-                selectedMarker.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+                selectedMarker.setIcon(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
                 mapView.invalidate();
                 selectedMarker = null;
             }
@@ -493,21 +558,6 @@ public class MapaActivity extends AppCompatActivity {
         });
 
         bottomSheet.show();
-    }
-
-    private void setupBackPressHandler() {
-        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    // Deshabilitar este callback y dejar que el sistema maneje el back press
-                    setEnabled(false);
-                    getOnBackPressedDispatcher().onBackPressed();
-                }
-            }
-        });
     }
 
     @Override
