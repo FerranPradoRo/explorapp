@@ -79,12 +79,12 @@ public class ProfileActivity extends AppCompatActivity {
             btnLogin.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.GONE);
         } else {
-            Cursor cursor = dbHelper.buscarUsuarioPorId(userId);
+            Cursor cursor = dbHelper.findUserById(userId);
 
             if (cursor != null && cursor.moveToFirst()) {
-                String nombre = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_NOMBRE));
-                String apellido = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_APELLIDO));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USUARIO_EMAIL));
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_FIRST_NAME));
+                String apellido = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_LAST_NAME));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_EMAIL));
 
                 tvUserName.setText(nombre + " " + apellido);
                 tvUserEmail.setText(email);
@@ -136,13 +136,9 @@ public class ProfileActivity extends AppCompatActivity {
             logout();
         });
 
-        optionNotifications.setOnClickListener(v -> {
-            Toast.makeText(this, "Configuración de notificaciones - Próximamente", Toast.LENGTH_SHORT).show();
-        });
-
-        optionLanguage.setOnClickListener(v -> {
-            showLanguageDialog();
-        });
+        // Notificaciones e Idioma están deshabilitados (funcionalidad pendiente)
+        // optionNotifications.setOnClickListener(...);
+        // optionLanguage.setOnClickListener(...);
 
         optionAbout.setOnClickListener(v -> {
             showAboutDialog();
@@ -178,6 +174,8 @@ public class ProfileActivity extends AppCompatActivity {
             .show();
     }
 
+    // Método deshabilitado - funcionalidad pendiente
+    /*
     private void showLanguageDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         android.view.LayoutInflater inflater = getLayoutInflater();
@@ -207,6 +205,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         builder.create().show();
     }
+    */
 
     private void showAboutDialog() {
         new android.app.AlertDialog.Builder(this)

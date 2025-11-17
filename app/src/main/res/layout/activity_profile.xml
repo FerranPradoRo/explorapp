@@ -115,9 +115,10 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:alpha="0.5">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -146,9 +147,10 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:alpha="0.5">
 
                         <ImageView
                             android:layout_width="24dp"
